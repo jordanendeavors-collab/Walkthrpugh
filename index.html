@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAA Smart Security | Field Ops Training Portal</title>
+<meta name="theme-color" content="#080b12">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080b12;--surf:#0f1420;--card:#151c2e;--bdr:#1e2a40;--gold:#f5a623;--gold2:#c47d0d;--amber:#ff8c00;--red:#e83d3d;--green:#2ecb6a;--blue:#3a8dde;--purple:#c084fc;--txt:#e8ecf4;--muted:#6b7a99;--motion:#f97316;--camera:#22d3ee;--glass:#a78bfa;--water:#38bdf8;--contact:#4ade80;--smoke:#fb923c;--panic:#f43f5e}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'Barlow',sans-serif;font-size:15px;overflow-x:hidden}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:3px}
+
+/* LOGIN */
+#login{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#080b12,#0f1420,#080b12);display:flex;align-items:center;justify-content:center}
+#login.off{display:none}
+.lb{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:48px 44px;width:90%;max-width:420px;box-shadow:0 40px 100px rgba(0,0,0,.7);position:relative;overflow:hidden}
+.lb::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(245,166,35,.12),transparent 70%);pointer-events:none}
+.lb-co{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:5px}
+.lb-h{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;color:var(--txt);line-height:1;margin-bottom:5px}
+.lb-h span{color:var(--gold)}
+.lb-sub{font-size:12px;color:var(--muted);margin-bottom:30px;line-height:1.7}
+.lb-lbl{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:7px}
+.lb-in{width:100%;padding:13px 16px;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:16px;font-family:'Barlow',sans-serif;outline:none;transition:border-color .2s;letter-spacing:3px}
+.lb-in:focus{border-color:var(--gold)}
+.lb-btn{width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--gold2),var(--gold));border:none;border-radius:8px;color:#080b12;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
+.lb-btn:hover{opacity:.88}
+.lb-err{margin-top:11px;padding:10px 14px;background:rgba(232,61,61,.1);border:1px solid rgba(232,61,61,.25);border-radius:6px;color:#e83d3d;font-size:13px;text-align:center;display:none}
+.lb-err.on{display:block;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.lb-foot{margin-top:22px;font-size:11px;color:#2a3a54;text-align:center;line-height:1.9}
+
+/* TOP NAV */
+#nav{position:sticky;top:0;z-index:800;background:rgba(8,11,18,.97);border-bottom:1px solid var(--bdr);backdrop-filter:blur(14px);display:flex;align-items:stretch;height:52px}
+.nv-brand{display:flex;align-items:center;padding:0 18px;border-right:1px solid var(--bdr);flex-shrink:0}
+.nv-name{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;color:var(--gold);letter-spacing:.5px;line-height:1}
+.nv-sub{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.nv-tabs{display:flex;overflow-x:auto;flex:1}
+.nv-tab{display:flex;align-items:center;gap:6px;padding:0 16px;height:52px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;background:none;border:none;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.nv-tab:hover{color:var(--txt)}
+.nv-tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.nv-r{display:flex;align-items:center;gap:10px;padding:0 14px;border-left:1px solid var(--bdr);flex-shrink:0;margin-left:auto}
+.nv-pill{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);padding:3px 9px;border-radius:12px;letter-spacing:1px}
+.nv-out{padding:5px 11px;background:none;border:1px solid var(--bdr);border-radius:5px;color:var(--muted);font-size:11px;font-family:'Barlow',sans-serif;cursor:pointer;transition:all .15s}
+.nv-out:hover{color:var(--txt);border-color:var(--muted)}
+
+/* PANELS */
+.panel{display:none}
+.panel.on{display:block;animation:fu .22s ease}
+@keyframes fu{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* SCROLL BAR */
+#gsp{position:fixed;top:0;left:0;height:3px;z-index:9998;background:linear-gradient(90deg,var(--gold2),var(--gold));width:0%;pointer-events:none;transition:width .1s}
+
+/* ===================== GUIDE ===================== */
+#guide-side{position:fixed;left:0;top:52px;bottom:0;width:256px;background:var(--surf);border-right:1px solid var(--bdr);overflow-y:auto;z-index:100;transition:transform .3s;display:flex;flex-direction:column}
+#guide-main{margin-left:256px;min-height:100vh}
+.gs-brand{padding:18px 16px 14px;border-bottom:1px solid var(--bdr);background:linear-gradient(135deg,#0f1420,#141d30)}
+.gs-logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--gold);letter-spacing:1px}
+.gs-sub{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+.gs-mission{margin-top:8px;font-size:11px;color:var(--gold2);font-style:italic}
+.gs-prog{padding:10px 16px;border-bottom:1px solid var(--bdr);background:var(--bg)}
+.gs-prog-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:5px;display:flex;justify-content:space-between}
+.gs-bar{height:4px;background:var(--bdr);border-radius:2px;overflow:hidden}
+.gs-fill{height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold));border-radius:2px;transition:width .3s;width:0%}
+.gs-sec{padding:12px 16px 4px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.gs-item{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:pointer;border-left:3px solid transparent;transition:all .15s;color:var(--muted);font-size:13px;font-weight:500;text-decoration:none}
+.gs-item:hover{background:rgba(245,166,35,.05);color:var(--txt);border-left-color:var(--gold2)}
+.gs-item.on{background:rgba(245,166,35,.1);color:var(--gold);border-left-color:var(--gold)}
+.gs-item .gi{font-size:15px;width:18px;text-align:center}
+.gs-item .gn{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--bdr);background:var(--bg);padding:1px 5px;border-radius:3px}
+.gs-item.on .gn{color:var(--gold2);background:rgba(245,166,35,.1)}
+.gs-foot{margin-top:auto;padding:14px 16px;border-top:1px solid var(--bdr);font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.mob-tog{display:none;position:fixed;top:60px;left:12px;z-index:200;background:var(--gold);color:var(--bg);border:none;border-radius:6px;padding:7px 11px;font-size:17px;cursor:pointer;font-weight:900}
+
+/* GUIDE PAGE HEADER */
+.g-hdr{background:linear-gradient(135deg,#0d1220,#101828);border-bottom:1px solid var(--bdr);padding:36px 44px;position:relative;overflow:hidden}
+.g-hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:280px;height:280px;background:radial-gradient(circle,rgba(245,166,35,.08),transparent 70%);pointer-events:none}
+.g-hdr::after{content:'FIELD OPS';position:absolute;bottom:-20px;right:32px;font-family:'Barlow Condensed',sans-serif;font-size:100px;font-weight:900;color:rgba(245,166,35,.04);pointer-events:none;line-height:1}
+.g-eye{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700}
+.g-hdr h1{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;color:var(--txt);line-height:1;letter-spacing:1px}
+.g-hdr h1 span{color:var(--gold)}
+.g-hdr p{max-width:580px;margin-top:10px;color:var(--muted);font-size:13px;line-height:1.7}
+.g-badges{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.badge{padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif}
+.bg{background:rgba(245,166,35,.12);color:var(--gold);border:1px solid rgba(245,166,35,.25)}
+.bb{background:rgba(58,141,222,.1);color:var(--blue);border:1px solid rgba(58,141,222,.2)}
+.bp{background:rgba(192,132,252,.1);color:var(--purple);border:1px solid rgba(192,132,252,.2)}
+.bk{background:rgba(46,203,106,.1);color:var(--green);border:1px solid rgba(46,203,106,.2)}
+.phil{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--bdr)}
+.ph{padding:14px 20px;border-right:1px solid var(--bdr)}
+.ph:last-child{border-right:none}
+.ph-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.ph-val{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--gold);letter-spacing:.5px}
+#g-content{padding:36px 44px;max-width:1080px}
+
+/* STOPS */
+.stop{margin-bottom:60px;scroll-margin-top:70px}
+.stop-hdr{display:flex;align-items:flex-start;gap:18px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--bdr)}
+.stop-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);padding:4px 8px;border-radius:4px;white-space:nowrap;margin-top:3px;letter-spacing:1px}
+.stop-tb{}
+.stop-t{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;color:var(--txt);letter-spacing:.5px;line-height:1}
+.stop-s{font-size:13px;color:var(--muted);margin-top:5px;font-style:italic}
+.stop-g{margin-top:6px;font-size:11px;color:var(--amber);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+/* TABS */
+.tnav{display:flex;gap:3px;border-bottom:1px solid var(--bdr);margin-bottom:18px}
+.tbtn{padding:8px 16px;font-size:11px;font-weight:700;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;cursor:pointer;background:none;border:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.tbtn:hover{color:var(--txt)}
+.tbtn.look.on{color:var(--blue);border-bottom-color:var(--blue)}
+.tbtn.ask.on{color:var(--green);border-bottom-color:var(--green)}
+.tbtn.crumb.on{color:var(--purple);border-bottom-color:var(--purple)}
+.tbtn.gbb.on{color:var(--gold);border-bottom-color:var(--gold)}
+.tpane{display:none}
+.tpane.on{display:block;animation:fu .18s ease}
+
+/* LOOK CARDS */
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.lcard{background:var(--card);border:1px solid var(--bdr);border-left:3px solid var(--blue);border-radius:8px;padding:14px 16px;transition:border-color .15s}
+.lcard:hover{border-left-color:var(--gold)}
+.lcard-t{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.lcard ul{list-style:none}
+.lcard li{padding:3px 0 3px 13px;font-size:13px;color:var(--txt);position:relative;line-height:1.5}
+.lcard li::before{content:'→';position:absolute;left:0;color:var(--blue);font-size:10px;top:5px}
+
+/* ASK */
+.alist{display:flex;flex-direction:column;gap:11px}
+.aitem{background:var(--card);border:1px solid var(--bdr);border-left:3px solid var(--green);border-radius:8px;padding:14px 18px}
+.atype{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:5px;font-family:'JetBrains Mono',monospace}
+.aq{font-size:14px;color:var(--txt);font-style:italic;line-height:1.6}
+.aq::before{content:'"';color:var(--green)}
+.aq::after{content:'"';color:var(--green)}
+.aint{margin-top:8px;font-size:12px;color:var(--muted);padding-top:8px;border-top:1px solid var(--bdr)}
+.aint strong{color:var(--amber)}
+
+/* CRUMBS */
+.ci{background:linear-gradient(135deg,rgba(192,132,252,.07),rgba(192,132,252,.02));border:1px solid rgba(192,132,252,.2);border-radius:8px;padding:14px 18px;margin-bottom:14px;font-size:13px;color:var(--purple);font-style:italic}
+.clist{display:flex;flex-direction:column;gap:9px}
+.crumb{background:var(--card);border:1px solid var(--bdr);border-left:3px solid var(--purple);border-radius:8px;padding:12px 16px;display:flex;gap:12px}
+.cn{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;color:rgba(192,132,252,.35);min-width:26px;line-height:1;margin-top:1px}
+.cl{font-size:13px;color:var(--txt);font-weight:500;margin-bottom:3px}
+.cl em{color:var(--purple);font-style:normal;font-weight:700}
+.cw{font-size:12px;color:var(--muted)}
+.cseed{margin-top:14px;padding:11px 14px;background:rgba(192,132,252,.07);border:1px dashed rgba(192,132,252,.3);border-radius:6px;font-size:13px;color:var(--purple)}
+.cseed strong{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+
+/* GBB */
+.ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.gc{border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+.gc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.gc.good{background:rgba(46,203,106,.07);border:1px solid rgba(46,203,106,.2)}
+.gc.good::before{background:var(--green)}
+.gc.better{background:rgba(58,141,222,.07);border:1px solid rgba(58,141,222,.2)}
+.gc.better::before{background:var(--blue)}
+.gc.best{background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.2)}
+.gc.best::before{background:var(--gold)}
+.gt{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;text-transform:uppercase}
+.gc.good .gt{color:var(--green)}
+.gc.better .gt{color:var(--blue)}
+.gc.best .gt{color:var(--gold)}
+.gp{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.gprod{display:flex;flex-direction:column;gap:4px}
+.gprod span{font-size:12px;color:var(--txt);padding-left:11px;position:relative}
+.gprod span::before{content:'✓';position:absolute;left:0;font-size:10px}
+.gc.good .gprod span::before{color:var(--green)}
+.gc.better .gprod span::before{color:var(--blue)}
+.gc.best .gprod span::before{color:var(--gold)}
+.gout{margin-top:auto;font-size:12px;padding:7px 11px;border-radius:5px;font-style:italic;font-weight:500;line-height:1.4}
+.gc.good .gout{background:rgba(46,203,106,.08);color:var(--green)}
+.gc.better .gout{background:rgba(58,141,222,.08);color:var(--blue)}
+.gc.best .gout{background:rgba(245,166,35,.08);color:var(--gold)}
+.grec{grid-column:1/-1;background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:12px 16px;font-size:13px;display:flex;gap:10px}
+.grec-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;white-space:nowrap;margin-top:2px}
+
+/* CLOSER */
+.closer{background:linear-gradient(135deg,rgba(245,166,35,.06),rgba(245,166,35,.02));border:1px solid rgba(245,166,35,.2);border-radius:10px;padding:22px 26px;margin-bottom:18px}
+.closer h3{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--gold);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+.closer p{font-size:14px;color:var(--txt);line-height:1.7;margin-bottom:8px}
+.cline{background:var(--card);border:1px solid var(--bdr);border-left:3px solid var(--gold);border-radius:6px;padding:11px 14px;font-size:14px;color:var(--txt);margin-bottom:9px;font-style:italic}
+.cline::before{content:'"';color:var(--gold);font-size:17px}
+.cline::after{content:'"';color:var(--gold);font-size:17px}
+
+/* UTILS */
+.sdiv{display:flex;align-items:center;gap:12px;margin:28px 0 18px;color:var(--muted);font-size:9px;letter-spacing:2px;text-transform:uppercase}
+.sdiv::before,.sdiv::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.abox{display:flex;gap:11px;padding:13px 16px;border-radius:8px;margin-bottom:14px;font-size:13px}
+.abox.tip{background:rgba(46,203,106,.07);border:1px solid rgba(46,203,106,.18);color:var(--green)}
+.abox.warn{background:rgba(255,140,0,.07);border:1px solid rgba(255,140,0,.2);color:var(--amber)}
+.abox .ai{font-size:17px;flex-shrink:0}
+.intro-card{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:22px 26px;margin-bottom:32px}
+.intro-card h2{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
+.intro-card p{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:7px}
+.prow{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:11px;margin-top:14px}
+.princ{background:var(--bg);border:1px solid var(--bdr);border-radius:6px;padding:11px 13px}
+.princ .pn{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:rgba(245,166,35,.18);line-height:1}
+.princ .pt{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--txt);text-transform:uppercase;letter-spacing:.5px;margin:3px 0}
+.princ .pb{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ===================== DEMO ===================== */
+#demo-panel .dhdr{background:linear-gradient(135deg,#0d1220,#101828);border-bottom:1px solid var(--bdr);padding:30px 40px;position:relative;overflow:hidden}
+#demo-panel .dhdr::before{content:'';position:absolute;top:-40px;right:-40px;width:280px;height:280px;background:radial-gradient(circle,rgba(245,166,35,.08),transparent 70%);pointer-events:none}
+#demo-panel .deye{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700}
+#demo-panel h1{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;color:var(--txt);line-height:1}
+#demo-panel h1 span{color:var(--gold)}
+#demo-panel .dsub{color:var(--muted);font-size:13px;margin-top:8px;max-width:640px}
+#demo-panel .dtabs{display:flex;gap:2px;background:var(--surf);border-bottom:1px solid var(--bdr);padding:0 40px;overflow-x:auto}
+#demo-panel .dtab{padding:13px 20px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;background:none;border:none;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:all .15s}
+#demo-panel .dtab:hover{color:var(--txt)}
+#demo-panel .dtab.on{color:var(--gold);border-bottom-color:var(--gold)}
+#demo-panel .dmain{max-width:1260px;margin:0 auto;padding:32px 40px}
+.dpage{display:none}
+.dpage.on{display:block;animation:fu .2s ease}
+.dsec-t{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--txt);margin-bottom:5px}
+.dsec-s{color:var(--muted);font-size:13px;margin-bottom:24px}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:24px}
+.leg{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--bdr);border-radius:20px;padding:5px 13px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;user-select:none}
+.leg:hover,.leg.on{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.leg-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+/* FLOOR PLAN GRID */
+.fpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:22px;margin-bottom:32px}
+.fpc{background:var(--card);border:1px solid var(--bdr);border-radius:10px;overflow:hidden}
+.fph{padding:13px 16px;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center}
+.fpt{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.5px}
+.fpbadge{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);background:var(--bg);padding:2px 7px;border-radius:3px;font-family:'JetBrains Mono',monospace}
+.fpbody{padding:16px}
+.fpsvg{background:#070a10;border:1px solid var(--bdr);border-radius:6px;overflow:hidden;margin-bottom:12px}
+.fpnote{font-size:12px;color:var(--muted);line-height:1.7}
+.fpnote strong{color:var(--gold)}
+
+/* SVG room styles */
+.rw{fill:none;stroke:#2a3550;stroke-width:2.5}
+.rf{fill:rgba(21,28,46,.8)}
+.rl{font-family:'Barlow Condensed',sans-serif;font-size:11px;fill:#4a5875;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.wl{stroke:#3a8dde;stroke-width:2;opacity:.5}
+.ext{fill:#0a0e18;stroke:#1a2438;stroke-width:1;stroke-dasharray:4,2}
+
+/* sensor colors */
+.sm{fill:var(--motion);opacity:.85}
+.sc{fill:var(--camera);opacity:.9}
+.sg{fill:var(--glass);opacity:.85}
+.sw{fill:var(--water);opacity:.9}
+.sk{fill:var(--contact);opacity:.9}
+.ss{fill:var(--smoke);opacity:.85}
+.sp{fill:var(--panic);opacity:.9}
+
+/* zones */
+.zm{fill:var(--motion);opacity:.07}
+.zc{fill:var(--camera);opacity:.06}
+.zg{fill:var(--glass);opacity:.06}
+.zw{fill:var(--water);opacity:.1}
+
+/* SCENARIO CARDS */
+.scgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:28px}
+.scard{background:var(--card);border:1px solid var(--bdr);border-radius:10px;overflow:hidden;transition:transform .18s,box-shadow .18s}
+.scard:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.sct{padding:15px 16px 11px;border-bottom:1px solid var(--bdr)}
+.scnum{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:5px}
+.scname{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:var(--txt);letter-spacing:.5px}
+.scroom{font-size:11px;color:var(--muted);margin-top:2px}
+.scb{padding:13px 16px;display:flex;flex-direction:column;gap:11px}
+.scrow{display:grid;grid-template-columns:80px 1fr;gap:7px;align-items:start;font-size:12px}
+.sclbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding-top:1px}
+.scval{color:var(--txt);line-height:1.5}
+.scemo{background:linear-gradient(135deg,rgba(192,132,252,.08),rgba(192,132,252,.02));border:1px solid rgba(192,132,252,.18);border-radius:6px;padding:9px 11px}
+.scemo .sclbl{color:var(--purple)}
+.scemo .scval{color:#d4b8f8;font-style:italic;font-size:13px}
+.scgbb{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.gchip{border-radius:5px;padding:5px 7px;text-align:center;font-size:11px;font-weight:600;line-height:1.3}
+.ch-g{background:rgba(46,203,106,.1);color:var(--green);border:1px solid rgba(46,203,106,.2)}
+.ch-b{background:rgba(58,141,222,.1);color:var(--blue);border:1px solid rgba(58,141,222,.2)}
+.ch-x{background:rgba(245,166,35,.1);color:var(--gold);border:1px solid rgba(245,166,35,.2)}
+.sccl{background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.18);border-radius:6px;padding:9px 11px;font-size:13px;color:var(--txt);font-style:italic}
+.sccl::before{content:'"';color:var(--gold);font-size:15px}
+.sccl::after{content:'"';color:var(--gold);font-size:15px}
+.stag{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:12px;font-size:11px;font-weight:600;margin:2px}
+.st-m{background:rgba(249,115,22,.12);color:var(--motion)}
+.st-c{background:rgba(34,211,238,.1);color:var(--camera)}
+.st-g{background:rgba(167,139,250,.1);color:var(--glass)}
+.st-w{background:rgba(56,189,248,.1);color:var(--water)}
+.st-k{background:rgba(74,222,128,.1);color:var(--contact)}
+.st-s{background:rgba(251,146,60,.1);color:var(--smoke)}
+.st-p{background:rgba(244,63,94,.1);color:var(--panic)}
+
+/* DEVICE TABLE */
+.dtbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px}
+.dtbl th{background:var(--bg);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 11px;border-bottom:2px solid var(--bdr);text-align:left}
+.dtbl td{padding:9px 11px;border-bottom:1px solid var(--bdr);color:var(--txt);vertical-align:top}
+.dtbl tr:hover td{background:rgba(245,166,35,.02)}
+
+/* EMOTION MAP */
+.emohero{background:linear-gradient(135deg,rgba(192,132,252,.07),rgba(192,132,252,.02));border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:22px 26px;margin-bottom:24px}
+.emohero h2{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--purple);margin-bottom:7px}
+.emohero p{font-size:13px;color:var(--muted);line-height:1.7}
+.emogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:15px}
+.emocard{background:var(--card);border:1px solid var(--bdr);border-radius:10px;overflow:hidden}
+.emoctop{padding:15px 16px 11px}
+.emoico{font-size:30px;margin-bottom:6px}
+.emoname{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.5px}
+.emotrig{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+.emolist{padding:0 16px 14px;display:flex;flex-direction:column;gap:8px}
+.emoent{background:var(--bg);border:1px solid var(--bdr);border-radius:6px;padding:9px 11px}
+.emoroom{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:3px}
+.emowhen{font-size:11px;color:var(--muted);margin-bottom:3px}
+.emoline{font-size:13px;color:var(--txt);font-style:italic}
+.emodrow{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
+
+/* STORYBOARD */
+.sbgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+.sbcard{background:var(--card);border:1px solid var(--bdr);border-radius:10px;overflow:hidden}
+.sbthumb{position:relative;height:170px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--bdr)}
+.sbplay{width:52px;height:52px;background:rgba(245,166,35,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;z-index:1}
+.sbnum{position:absolute;top:9px;left:11px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt);background:rgba(0,0,0,.7);padding:2px 7px;border-radius:3px;letter-spacing:1px}
+.sbdur{position:absolute;bottom:9px;right:11px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt);background:rgba(0,0,0,.7);padding:2px 7px;border-radius:3px}
+.sbbody{padding:15px 16px}
+.sbt{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--txt);margin-bottom:4px}
+.sbd{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:11px}
+.sbsteps{display:flex;flex-direction:column;gap:6px}
+.sbstep{display:flex;gap:9px;align-items:flex-start}
+.sbn{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);padding:1px 6px;border-radius:3px;flex-shrink:0;margin-top:1px}
+.sbst{font-size:12px;color:var(--txt);line-height:1.5}
+
+/* ARCH */
+.archrow{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
+.archcard{background:var(--card);border:1px solid var(--bdr);border-radius:10px;overflow:hidden}
+.archhdr{padding:11px 15px;border-bottom:1px solid var(--bdr);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center}
+.archbody{padding:14px}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  #guide-side{transform:translateX(-100%)}
+  #guide-side.open{transform:none}
+  #guide-main{margin-left:0}
+  .mob-tog{display:block}
+  .phil{grid-template-columns:repeat(2,1fr)}
+  .ggrid{grid-template-columns:1fr}
+  .archrow{grid-template-columns:1fr}
+  #g-content{padding:22px 18px}
+  .g-hdr{padding:44px 18px 24px}
+  #demo-panel .dmain{padding:22px 18px}
+  #demo-panel .dtabs{padding:0 14px}
+}
+@media(max-width:700px){
+  .nv-tab .tl{display:none}
+  .nv-pill{display:none}
+  .fpgrid{grid-template-columns:1fr}
+  .scgrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="gsp"></div>
+
+<!-- ========== LOGIN ========== -->
+<div id="login">
+  <div class="lb">
+    <div class="lb-co">AAA Smart Security · Field Operations</div>
+    <div class="lb-h">TRAINING<br><span>PORTAL</span></div>
+    <div class="lb-sub">In-Home Walkthrough Guide · Floor Plans · Demo Scenarios<br>Sensor Maps · Objection Playbook · Good · Better · Best<br><strong style="color:var(--amber)">Authorized Personnel Only</strong></div>
+    <label class="lb-lbl" for="pw">Access Password</label>
+    <input class="lb-in" type="password" id="pw" placeholder="Enter password" autocomplete="off" onkeydown="if(event.key==='Enter')login()">
+    <button class="lb-btn" onclick="login()">🔒 &nbsp;ENTER PORTAL</button>
+    <div class="lb-err" id="lb-err">⚠ Incorrect password. Try again.</div>
+    <div class="lb-foot">Members First · G$D · True North<br>AAA Mountain West Group · Field Training v3.0 · © 2026</div>
+  </div>
+</div>
+
+<!-- ========== TOP NAV ========== -->
+<nav id="nav">
+  <div class="nv-brand">
+    <div><div class="nv-name">AAA SMART SECURITY</div><div class="nv-sub">Field Ops Portal</div></div>
+  </div>
+  <div class="nv-tabs">
+    <button class="nv-tab on"  onclick="go('guide',this)">🗺️ <span class="tl">Walkthrough Guide</span></button>
+    <button class="nv-tab"     onclick="go('fp',this)">🏠 <span class="tl">Floor Plans</span></button>
+    <button class="nv-tab"     onclick="go('sc',this)">📋 <span class="tl">Scenarios</span></button>
+    <button class="nv-tab"     onclick="go('dv',this)">🔧 <span class="tl">Devices</span></button>
+    <button class="nv-tab"     onclick="go('em',this)">❤️ <span class="tl">Emotion Map</span></button>
+    <button class="nv-tab"     onclick="go('sb',this)">🎬 <span class="tl">Storyboard</span></button>
+    <button class="nv-tab"     onclick="go('ar',this)">📐 <span class="tl">Architecture</span></button>
+  </div>
+  <div class="nv-r"><span class="nv-pill">SSU 2026</span><button class="nv-out" onclick="logout()">Log Out</button></div>
+</nav>
+
+<!-- ================================================================
+     GUIDE PANEL
+================================================================ -->
+<div class="panel on" id="panel-guide">
+  <button class="mob-tog" onclick="document.getElementById('guide-side').classList.toggle('open')">☰</button>
+  <!-- SIDEBAR -->
+  <nav id="guide-side">
+    <div class="gs-brand"><div class="gs-logo">AAA SMART SECURITY</div><div class="gs-sub">In-Home Walkthrough Guide</div><div class="gs-mission">Members First · G$D · True North</div></div>
+    <div class="gs-prog"><div class="gs-prog-lbl"><span>WALKTHROUGH PROGRESS</span><span id="gp-pct">0%</span></div><div class="gs-bar"><div class="gs-fill" id="gp-fill"></div></div></div>
+    <div class="gs-sec">PRE-ENTRY</div>
+    <a href="#s00" class="gs-item" data-s="0"><span class="gi">🚗</span> Arrival & Approach<span class="gn">00</span></a>
+    <a href="#s01" class="gs-item" data-s="1"><span class="gi">🚪</span> Front Door & Entry<span class="gn">01</span></a>
+    <div class="gs-sec">COMMON AREAS</div>
+    <a href="#s02" class="gs-item" data-s="2"><span class="gi">🛋️</span> Living Room<span class="gn">02</span></a>
+    <a href="#s03" class="gs-item" data-s="3"><span class="gi">🍽️</span> Kitchen & Dining<span class="gn">03</span></a>
+    <div class="gs-sec">PRIVATE SPACES</div>
+    <a href="#s04" class="gs-item" data-s="4"><span class="gi">🛏️</span> Master Bedroom<span class="gn">04</span></a>
+    <a href="#s05" class="gs-item" data-s="5"><span class="gi">👧</span> Kids' Rooms<span class="gn">05</span></a>
+    <a href="#s06" class="gs-item" data-s="6"><span class="gi">💼</span> Home Office<span class="gn">06</span></a>
+    <div class="gs-sec">PERIMETER & UTILITY</div>
+    <a href="#s07" class="gs-item" data-s="7"><span class="gi">🏠</span> Hallways & Stairs<span class="gn">07</span></a>
+    <a href="#s08" class="gs-item" data-s="8"><span class="gi">🔧</span> Basement & Utility<span class="gn">08</span></a>
+    <a href="#s09" class="gs-item" data-s="9"><span class="gi">🚗</span> Garage<span class="gn">09</span></a>
+    <a href="#s10" class="gs-item" data-s="10"><span class="gi">🌿</span> Backyard & Perimeter<span class="gn">10</span></a>
+    <div class="gs-sec">THE CLOSE</div>
+    <a href="#s11" class="gs-item" data-s="11"><span class="gi">✅</span> Kitchen Table Close<span class="gn">11</span></a>
+    <a href="#s12" class="gs-item" data-s="12"><span class="gi">🏆</span> Objection Playbook<span class="gn">12</span></a>
+    <div class="gs-foot">v3.0 · AAA Smart Security<br>Field Ops Training System</div>
+  </nav>
+
+  <!-- MAIN -->
+  <div id="guide-main">
+    <div class="g-hdr">
+      <div class="g-eye">AAA Smart Security · Field Operations</div>
+      <h1>THE IN-HOME<br><span>WALKTHROUGH</span> PLAYBOOK</h1>
+      <p>Step-by-step tactical guide for every room — what to observe, what to ask, what breadcrumbs to drop, and how to close. Always thinking Good · Better · Best.</p>
+      <div class="g-badges"><span class="badge bg">🔍 13 Stops</span><span class="badge bb">💬 60+ Questions</span><span class="badge bp">🍞 Every Drop Mapped</span><span class="badge bk">✅ G·B·B Framework</span></div>
+    </div>
+    <div class="phil">
+      <div class="ph"><div class="ph-lbl">Core Philosophy</div><div class="ph-val">Members First</div></div>
+      <div class="ph"><div class="ph-lbl">Execution</div><div class="ph-val">G$D — Get It Done</div></div>
+      <div class="ph"><div class="ph-lbl">Direction</div><div class="ph-val">True North Always</div></div>
+      <div class="ph"><div class="ph-lbl">Recommend Frame</div><div class="ph-val">Good · Better · Best</div></div>
+    </div>
+    <div id="g-content">
+
+      <div class="intro-card">
+        <h2>🧠 How This Guide Works</h2>
+        <p>This is a <strong style="color:var(--txt)">discovery mission</strong>. Every room is an opportunity to understand what this member values, fears, loves, and protects. The breadcrumbs you drop create a trail that leads naturally to the recommendation — so by the time you sit down to close, the member has already convinced themselves.</p>
+        <p>You're not selling a security system. You're <strong style="color:var(--gold)">reflecting back to the member the exact life they told you about</strong> — and showing them how to protect it.</p>
+        <div class="prow">
+          <div class="princ"><div class="pn">01</div><div class="pt">See Everything</div><div class="pb">Notice what they notice. Notice what they've stopped seeing.</div></div>
+          <div class="princ"><div class="pn">02</div><div class="pt">Ask → Listen</div><div class="pb">Every question earns two pieces of intelligence.</div></div>
+          <div class="princ"><div class="pn">03</div><div class="pt">Drop Crumbs</div><div class="pb">Plant seeds. The close waters them. Harvest at the table.</div></div>
+          <div class="princ"><div class="pn">04</div><div class="pt">G · B · B</div><div class="pb">Always lead with Best. Let them step down by choice.</div></div>
+          <div class="princ"><div class="pn">05</div><div class="pt">Emotion = Motion</div><div class="pb">Logic rents. Emotion owns. Speak to what they love.</div></div>
+        </div>
+      </div>
+
+      <!-- STOP 00 -->
+      <div class="stop" id="s00">
+        <div class="stop-hdr"><div class="stop-num">STOP 00</div><div class="stop-tb"><div class="stop-t">🚗 Arrival & Driveway Approach</div><div class="stop-s">Before you knock — read the property like a report card</div><div class="stop-g">GOAL: Build your first mental map. Identify exposures before they tell you.</div></div></div>
+        <div class="tnav">
+          <button class="tbtn look on" data-tp="t00-look">🔍 Look For</button>
+          <button class="tbtn ask"     data-tp="t00-ask">💬 Ask</button>
+          <button class="tbtn crumb"   data-tp="t00-crumb">🍞 Drop Crumbs</button>
+          <button class="tbtn gbb"     data-tp="t00-gbb">✅ G·B·B</button>
+        </div>
+        <div class="tpane on" id="t00-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">🏠 Property Exposure</div><ul><li>Corner lot? Double the perimeter exposure</li><li>Street visibility — well-lit or shadowed?</li><li>Dense landscaping blocking sightlines</li><li>Fence condition and gate locks</li><li>Proximity to alley or back street access</li></ul></div>
+          <div class="lcard"><div class="lcard-t">🚪 Entry Points from Curb</div><ul><li>Visible side doors or gates</li><li>Garage door style (older 1-button? Smart?)</li><li>Window accessibility from street level</li><li>Ring/doorbell camera already installed?</li><li>Visible alarm sticker, signage, or panel box</li></ul></div>
+          <div class="lcard"><div class="lcard-t">🐕 Lifestyle Clues</div><ul><li>Dog toys, basketball hoop → kids → protection emotion</li><li>Nice car in driveway → asset protection mindset</li><li>Amazon boxes left out → delivery theft risk</li><li>HOA community → neighborhood watch mentality</li><li>Ramp or accessibility mods → vulnerability awareness</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t00-ask"><div class="alist">
+          <div class="aitem"><div class="atype">Opening · Rapport</div><div class="aq">How long have you been in the neighborhood?</div><div class="aint"><strong>Intel:</strong> Long = established, invested. New = still learning risk profile. Either unlocks conversation.</div></div>
+          <div class="aitem"><div class="atype">Awareness · Safety</div><div class="aq">Have you noticed anything in the area recently — anything that made you think twice?</div><div class="aint"><strong>Intel:</strong> Opens incident stories, personal fear, or "nothing yet" which sets up urgency.</div></div>
+          <div class="aitem"><div class="atype">Current Setup</div><div class="aq">I noticed you have [existing camera / no signage] — are you happy with your current coverage out here?</div><div class="aint"><strong>Intel:</strong> Acknowledges your observation. Shows you're already thinking about their property specifically.</div></div>
+        </div></div>
+        <div class="tpane" id="t00-crumb"><div class="ci">🍞 These are seeds. Plant them here, harvest at the close. Say them conversationally — never as a pitch.</div><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"From out here I can already count a few spots where you'd want coverage — let me show you as we walk."</em></div><div class="cw">Sets the expert frame. You see what they can't. Creates anticipation.</div></div></div>
+          <div class="crumb"><div class="cn">02</div><div><div class="cl"><em>"You know what burglars look for first? Easy access with low visibility. Let's see if you have any of those."</em></div><div class="cw">Creates mild urgency without alarm. They're now scanning through a security lens.</div></div></div>
+        </div><div class="cseed"><strong>🌱 Seed Planted at Stop 00</strong>The member is subconsciously scanning their own property as a risk. Every step inside compounds this awareness.</div></div>
+        <div class="tpane" id="t00-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gp">Entry Exterior Coverage</div><div class="gprod"><span>1x Video Doorbell</span><span>Alarm.com notifications</span><span>Front door contact sensor</span></div><div class="gout">See who comes to the door. Know when it opens.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gp">Full Front Coverage</div><div class="gprod"><span>Video Doorbell + 1 outdoor cam</span><span>Driveway/garage sensor</span><span>Motion-triggered lighting</span><span>24/7 cloud recording</span></div><div class="gout">Full driveway + entry visibility, day and night.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gp">360° Perimeter Command</div><div class="gprod"><span>4-camera outdoor HD system</span><span>Smart garage door controller</span><span>Package theft detection zone</span><span>Perimeter motion + lighting</span><span>Alarm.com full outdoor dashboard</span></div><div class="gout">Nothing moves around this property without you knowing.</div></div>
+          <div class="grec"><div class="grec-lbl">Field Note</div><div>Lead with Best. Show them what total confidence looks like first. Let them step down if budget is a concern — never start there.</div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 01 -->
+      <div class="stop" id="s01">
+        <div class="stop-hdr"><div class="stop-num">STOP 01</div><div class="stop-tb"><div class="stop-t">🚪 Front Door & Entry</div><div class="stop-s">The #1 entry point for 34% of break-ins</div><div class="stop-g">GOAL: Establish the vulnerability. Connect it to their emotion — who do they love that walks through this door?</div></div></div>
+        <div class="tnav"><button class="tbtn look on" data-tp="t01-look">🔍 Look For</button><button class="tbtn ask" data-tp="t01-ask">💬 Ask</button><button class="tbtn crumb" data-tp="t01-crumb">🍞 Drop Crumbs</button><button class="tbtn gbb" data-tp="t01-gbb">✅ G·B·B</button></div>
+        <div class="tpane on" id="t01-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">🔒 Door Security</div><ul><li>Deadbolt — single or double cylinder?</li><li>Strike plate — 2-screw builder grade or reinforced?</li><li>Door frame condition — weathered, split wood?</li><li>Smart lock or traditional key?</li><li>Peephole / sidelight windows?</li></ul></div>
+          <div class="lcard"><div class="lcard-t">📦 Tech Already There</div><ul><li>Existing doorbell camera (Ring? Nest? Dead?)</li><li>Old alarm keypad near entry?</li><li>Panel box — which company? Active monitoring?</li><li>Motion detector in entryway?</li></ul></div>
+          <div class="lcard"><div class="lcard-t">🧠 Emotional Intel</div><ul><li>Kids' backpacks near door → latchkey situation</li><li>Dog gate / baby gate → young family</li><li>Multiple deadbolts → already nervous</li><li>Key lockbox → vacation rental or caregiver access</li><li>Packages piled up → not always home</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t01-ask"><div class="alist">
+          <div class="aitem"><div class="atype">Safety Habit</div><div class="aq">When you leave, do you always remember to lock both locks — or is it hit or miss?</div><div class="aint"><strong>Intel:</strong> Gets them laughing or honest. Opens smart lock automation conversation.</div></div>
+          <div class="aitem"><div class="atype">Access Management</div><div class="aq">Who else has a key to this door — kids, family, house cleaner, dog walker?</div><div class="aint"><strong>Intel:</strong> Surfaces smart lock / access code need. Creates concern about key control.</div></div>
+          <div class="aitem"><div class="atype">Emotional Hook</div><div class="aq">Do your kids get home before you? What do they do when they get here?</div><div class="aint"><strong>Intel:</strong> GOLD. Parents feel guilt/worry. Doorbell + smart lock = peace of mind sold right here.</div></div>
+        </div></div>
+        <div class="tpane" id="t01-crumb"><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"This strike plate — one kick and most doors open regardless of what lock is on it. We can fix that."</em></div><div class="cw">Factual. Creates vulnerability awareness. "We can fix that" keeps it solution-focused.</div></div></div>
+          <div class="crumb"><div class="cn">02</div><div><div class="cl"><em>"Imagine getting a notification the second your kid walks through this door. You're at work — you see their face. That's what we're building today."</em></div><div class="cw">Connects product to parental love. Drop only if kids-home-alone is confirmed.</div></div></div>
+          <div class="crumb"><div class="cn">03</div><div><div class="cl"><em>"A lot of our members tell me that anxiety of 'did I lock the door?' — it just goes away."</em></div><div class="cw">Social proof. Normalizes the emotion. Makes the benefit feel real.</div></div></div>
+        </div></div>
+        <div class="tpane" id="t01-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gprod"><span>Video Doorbell Camera</span><span>Door Contact Sensor</span><span>Alarm.com mobile alerts</span></div><div class="gout">Know when the door opens. See who's there.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gprod"><span>Video Doorbell + Smart Lock</span><span>Unique user codes per person</span><span>Auto-lock schedule</span><span>Lock/unlock history log</span></div><div class="gout">Control who gets in. Know exactly when they used their code.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gprod"><span>Smart Deadbolt + Video Doorbell</span><span>Entryway motion detector</span><span>Two-way audio / visitor mgmt</span><span>Auto-lock + geo-fencing</span><span>Child arrival notification rule</span></div><div class="gout">Total command of who enters, when, and what happens next.</div></div>
+          <div class="grec"><div class="grec-lbl">Close Tip</div><div>If kids home alone confirmed: <em>"The smart lock with child arrival notification alone is worth every penny."</em></div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 02 -->
+      <div class="stop" id="s02">
+        <div class="stop-hdr"><div class="stop-num">STOP 02</div><div class="stop-tb"><div class="stop-t">🛋️ Living Room</div><div class="stop-s">The heart of the home — loaded with emotional anchors and tech intel</div><div class="stop-g">GOAL: Understand what they value most. The sliding door is almost always unsensed.</div></div></div>
+        <div class="tnav"><button class="tbtn look on" data-tp="t02-look">🔍 Look For</button><button class="tbtn ask" data-tp="t02-ask">💬 Ask</button><button class="tbtn crumb" data-tp="t02-crumb">🍞 Drop Crumbs</button><button class="tbtn gbb" data-tp="t02-gbb">✅ G·B·B</button></div>
+        <div class="tpane on" id="t02-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">🪟 Vulnerabilities</div><ul><li>Sliding glass door to patio — usually unsensed</li><li>Large picture windows — easily breached</li><li>Window AC units — can be pushed in</li><li>Ground floor windows — how many accessible?</li></ul></div>
+          <div class="lcard"><div class="lcard-t">💎 High-Value Items</div><ul><li>Large TV / entertainment system</li><li>Gaming consoles, electronics</li><li>Artwork, collectibles, display cases</li><li>Musical instruments or recording gear</li></ul></div>
+          <div class="lcard"><div class="lcard-t">📡 Existing Tech</div><ul><li>Smart TV, Alexa, Google Home visible?</li><li>Router location (Z-Wave compatibility)</li><li>Smart lighting already installed?</li><li>Existing alarm sensor on windows?</li></ul></div>
+          <div class="lcard"><div class="lcard-t">👨‍👩‍👧 Family Profile</div><ul><li>Family photos — ages of kids?</li><li>Pet beds → pet-immune motion needed?</li><li>Elderly parent photos or medical equipment</li><li>Military/first responder signals</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t02-ask"><div class="alist">
+          <div class="aitem"><div class="atype">The Slider</div><div class="aq">Do you use that back door a lot, or mainly just the front?</div><div class="aint"><strong>Intel:</strong> Almost no one has a sensor on their sliding glass door. Surfaces the #2 entry point gap.</div></div>
+          <div class="aitem"><div class="atype">Smart Home Curiosity</div><div class="aq">Are you already into smart home stuff — I see you've got Alexa — or is that just one thing you picked up?</div><div class="aint"><strong>Intel:</strong> Gauges tech appetite. Smart home integration is a huge upsell for early adopters.</div></div>
+          <div class="aitem"><div class="atype">Remote Habits</div><div class="aq">Are you home most evenings, or are you the type that's always on the go?</div><div class="aint"><strong>Intel:</strong> More away = more cameras, more remote alerts, stronger peace-of-mind story.</div></div>
+        </div></div>
+        <div class="tpane" id="t02-crumb"><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"That sliding door is the second most common entry point in residential break-ins. Nine out of ten homes I go into — nothing on it. We'll add that to the list."</em></div><div class="cw">"Add it to the list" signals you're building their custom solution.</div></div></div>
+          <div class="crumb"><div class="cn">02</div><div><div class="cl"><em>"With Alarm.com you can set this system to talk to your Alexa. Walk in, say 'I'm home,' and it disarms. Everything integrated."</em></div><div class="cw">If they have smart home devices, this triggers the "wow" reaction.</div></div></div>
+          <div class="crumb"><div class="cn">03</div><div><div class="cl"><em>"Most of our monitoring is under a dollar a day. When I show you what that covers, it's going to seem like a no-brainer."</em></div><div class="cw">Pre-handles the price objection. Plant it early, use it again at close.</div></div></div>
+        </div></div>
+        <div class="tpane" id="t02-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gprod"><span>Window/door contact sensors (3–4)</span><span>1 interior motion detector</span><span>Sliding door sensor + pin lock</span></div><div class="gout">Core perimeter coverage for the most-used living space.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gprod"><span>All Good +</span><span>Indoor HD camera</span><span>Glass break sensor</span><span>Smart lighting integration</span></div><div class="gout">See live video. Know if glass breaks anywhere in range.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gprod"><span>Full interior camera system</span><span>Pet-immune motion (if applicable)</span><span>Alarm.com smart home scenes</span><span>Alexa/Google integration</span><span>"Away mode" automation rules</span></div><div class="gout">Full smart home integration. The home works for them.</div></div>
+          <div class="grec"><div class="grec-lbl">Slider Alert</div><div>Always quote a sliding door sensor. It's an easy add-on that consistently surprises members — makes your package feel incredibly thorough.</div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 03 -->
+      <div class="stop" id="s03">
+        <div class="stop-hdr"><div class="stop-num">STOP 03</div><div class="stop-tb"><div class="stop-t">🍽️ Kitchen & Dining</div><div class="stop-s">CO, fire, water, and the family's daily rhythm live here</div><div class="stop-g">GOAL: Expand the conversation beyond burglary. Life safety closes here.</div></div></div>
+        <div class="tnav"><button class="tbtn look on" data-tp="t03-look">🔍 Look For</button><button class="tbtn ask" data-tp="t03-ask">💬 Ask</button><button class="tbtn crumb" data-tp="t03-crumb">🍞 Drop Crumbs</button><button class="tbtn gbb" data-tp="t03-gbb">✅ G·B·B</button></div>
+        <div class="tpane on" id="t03-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">🔥 Fire & CO Risks</div><ul><li>Smoke detector — builder grade? Expiration date?</li><li>CO detector present? (Gas stove = need)</li><li>Gas range vs. electric (CO risk level)</li><li>Distance to nearest smoke detector</li></ul></div>
+          <div class="lcard"><div class="lcard-t">💧 Water & Flood</div><ul><li>Dishwasher, fridge water line access</li><li>Under-sink plumbing condition</li><li>Basement directly below?</li><li>Sump pump in nearby utility room?</li></ul></div>
+          <div class="lcard"><div class="lcard-t">🚪 Forgotten Entry</div><ul><li>Kitchen door to garage — locked or open?</li><li>Garage access door almost never sensed</li><li>Back door to exterior from kitchen?</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t03-ask"><div class="alist">
+          <div class="aitem"><div class="atype">Fire Safety Reality Check</div><div class="aq">When's the last time you tested that smoke detector? Do you know if it's interconnected with the others?</div><div class="aint"><strong>Intel:</strong> Most don't know. Opens monitored life safety vs. standalone builder detectors.</div></div>
+          <div class="aitem"><div class="atype">CO Awareness</div><div class="aq">You've got a gas range — do you have CO detectors? Did you know CO is completely odorless and colorless?</div><div class="aint"><strong>Intel:</strong> CO is the #1 life safety close. Most members genuinely don't know the risk. Education = trust.</div></div>
+          <div class="aitem"><div class="atype">Water History</div><div class="aq">Have you ever had a water issue — dishwasher leak, fridge line, anything like that?</div><div class="aint"><strong>Intel:</strong> If yes, water sensors close easily. If no: "let's prevent your first one."</div></div>
+        </div></div>
+        <div class="tpane" id="t03-crumb"><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"A monitored smoke and CO detector calls us and 911 automatically even if you're asleep. That builder-grade detector only helps if someone's awake to hear it."</em></div><div class="cw">Fear of sleeping through an emergency is visceral. Monitored = they don't have to be awake.</div></div></div>
+          <div class="crumb"><div class="cn">02</div><div><div class="cl"><em>"Water sensors are pennies compared to what a hidden leak costs. One member caught a slow dishwasher leak before it became a $15,000 claim."</em></div><div class="cw">Specific dollar story. Makes the add-on feel like insurance, not an upsell.</div></div></div>
+        </div></div>
+        <div class="tpane" id="t03-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gprod"><span>Monitored smoke detector (kitchen)</span><span>CO detector (gas appliance homes)</span><span>Kitchen-to-garage door sensor</span></div><div class="gout">Life safety basics — monitored and connected.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gprod"><span>Combo smoke/CO throughout</span><span>Water sensor (under sink, dishwasher)</span><span>Kitchen door contact sensor</span></div><div class="gout">Full life safety layer on top of security.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gprod"><span>Whole-home monitored smoke/CO network</span><span>Water sensors all wet locations</span><span>Main water shutoff sensor/valve</span><span>Thermostat integration</span></div><div class="gout">Total environmental protection. The home monitors itself.</div></div>
+          <div class="grec"><div class="grec-lbl">Key Reframe</div><div><em>"Security is what we do. Life safety is why we exist."</em> This stop expands from intruders to everything that can hurt their family.</div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 04 -->
+      <div class="stop" id="s04">
+        <div class="stop-hdr"><div class="stop-num">STOP 04</div><div class="stop-tb"><div class="stop-t">🛏️ Master Bedroom</div><div class="stop-s">Where fear is highest and logic takes a back seat</div><div class="stop-g">GOAL: Tap into the "3AM scenario." This is where every homeowner's deepest fear lives.</div></div></div>
+        <div class="tnav"><button class="tbtn look on" data-tp="t04-look">🔍 Look For</button><button class="tbtn ask" data-tp="t04-ask">💬 Ask</button><button class="tbtn crumb" data-tp="t04-crumb">🍞 Drop Crumbs</button><button class="tbtn gbb" data-tp="t04-gbb">✅ G·B·B</button></div>
+        <div class="tpane on" id="t04-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">🚪 Entry Points</div><ul><li>Windows — ground floor or ladder-accessible?</li><li>Sliding door to deck or balcony?</li><li>Master bath window (often forgotten)</li><li>Walk-in closet exterior wall with window?</li></ul></div>
+          <div class="lcard"><div class="lcard-t">🔫 Existing Protection</div><ul><li>Safe — bolted or portable?</li><li>Existing alarm — bedroom notification set up?</li><li>Dog sleeping here (natural deterrent)</li></ul></div>
+          <div class="lcard"><div class="lcard-t">💊 Medical / Life Safety</div><ul><li>CPAP, oxygen, medical monitors</li><li>Medication on nightstand</li><li>Medical alert button or wearable</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t04-ask"><div class="alist">
+          <div class="aitem"><div class="atype">The 3AM Question</div><div class="aq">Have you ever been woken up by a noise in the middle of the night — not knowing if it was real or not?</div><div class="aint"><strong>Intel:</strong> Almost everyone says yes. Surfaces the deepest fear. Now you're speaking to something real.</div></div>
+          <div class="aitem"><div class="atype">Response Plan</div><div class="aq">If that alarm went off right now at 2am, what would you actually do?</div><div class="aint"><strong>Intel:</strong> Most people have no plan. Creates urgency around professional monitoring and panic response.</div></div>
+          <div class="aitem"><div class="atype">Panic Button</div><div class="aq">Do you have anything by your bed you could hit right now if you needed help immediately?</div><div class="aint"><strong>Intel:</strong> If no — the panic pendant close writes itself. "In 15 seconds we can fix that."</div></div>
+        </div></div>
+        <div class="tpane" id="t04-crumb"><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"Here's what I want to give you in this room: certainty. If anything triggers anywhere, you know it in here immediately — and so do we. You're not alone in that moment."</em></div><div class="cw">"You're not alone" is the single most powerful phrase in home security. Use it once. Use it here.</div></div></div>
+          <div class="crumb"><div class="cn">02</div><div><div class="cl"><em>"A lot of members put a panic button right here on the nightstand. One press — police are on their way. No questions, no grabbing your phone in the dark."</em></div><div class="cw">Concrete. Visual. Immediate. Panic button is the easiest yes in the whole install.</div></div></div>
+          <div class="crumb"><div class="cn">03</div><div><div class="cl"><em>"The goal isn't to make you scared. It's to make you confident. By the time we're done, you're going to sleep differently in here."</em></div><div class="cw">Reframes security as peace. They'll remember this line.</div></div></div>
+        </div></div>
+        <div class="tpane" id="t04-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gprod"><span>Window sensor (master + bath)</span><span>In-room notification</span><span>Monitored smoke detector</span></div><div class="gout">Know if anyone enters the bedroom level.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gprod"><span>All Good +</span><span>Wireless panic button (nightstand)</span><span>Motion detector hallway outside</span><span>Two-way voice monitoring</span></div><div class="gout">One press = help is coming. No phone needed.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gprod"><span>Full bedroom + hall sensors</span><span>Panic button + app panic shortcut</span><span>Medical alert integration</span><span>Crash & smash protection</span></div><div class="gout">Complete sanctuary. Fastest possible response.</div></div>
+          <div class="grec"><div class="grec-lbl">Always Add</div><div>Panic button closes here more than anywhere else. Low cost, high emotional value. Never leave a master bedroom without quoting one.</div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 05 -->
+      <div class="stop" id="s05">
+        <div class="stop-hdr"><div class="stop-num">STOP 05</div><div class="stop-tb"><div class="stop-t">👧 Kids' Rooms</div><div class="stop-s">Every parent's deepest purpose lives behind this door</div><div class="stop-g">GOAL: Connect every sensor to a child's name and face. This is not a transaction — it's a promise.</div></div></div>
+        <div class="tnav"><button class="tbtn look on" data-tp="t05-look">🔍 Look For</button><button class="tbtn ask" data-tp="t05-ask">💬 Ask</button><button class="tbtn crumb" data-tp="t05-crumb">🍞 Drop Crumbs</button><button class="tbtn gbb" data-tp="t05-gbb">✅ G·B·B</button></div>
+        <div class="tpane on" id="t05-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">🪟 Physical Vulnerabilities</div><ul><li>Ground floor bedroom window — major risk</li><li>Window locks — builder grade easily defeated</li><li>Window with easy outside access (tree, fence)</li><li>Bedroom far from master (alert range)</li></ul></div>
+          <div class="lcard"><div class="lcard-t">🧒 Child Age Signals</div><ul><li>Infant/toddler → baby monitor integration need</li><li>Elementary → latchkey / arrival alert need</li><li>Teen → more privacy, indoor camera sensitivity</li><li>Multiple kids → whole floor protection framing</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t05-ask"><div class="alist">
+          <div class="aitem"><div class="atype">Parental Fear</div><div class="aq">How old are your kids? Do they sleep all the way down the hall from you?</div><div class="aint"><strong>Intel:</strong> Distance = vulnerability story. Young kids = baby monitor integration. Older = motion sensors in hall.</div></div>
+          <div class="aitem"><div class="atype">Wandering Risk</div><div class="aq">Do your little ones ever get up and wander? Have you ever found them somewhere unexpected?</div><div class="aint"><strong>Intel:</strong> Door chime + motion sensor = child wandering alert. Every parent with toddlers needs this.</div></div>
+        </div></div>
+        <div class="tpane" id="t05-crumb"><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"This window right here — I'm going to put a sensor on it. Not because I want to scare you, but because you should know the second it opens. Period."</em></div><div class="cw">Firm, protective, parental energy. "Period" closes the logic loop.</div></div></div>
+          <div class="crumb"><div class="cn">02</div><div><div class="cl"><em>"One of the most common calls we get from parents: 'I just want to make sure they're home.' That's it. We can do that automatically."</em></div><div class="cw">Social proof + normalization. Every parent just became a buyer.</div></div></div>
+        </div></div>
+        <div class="tpane" id="t05-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gprod"><span>Window sensors per kids' room</span><span>Hall motion detector</span><span>Entry chime on room door</span></div><div class="gout">Know if the window opens. Know if they wander.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gprod"><span>All Good +</span><span>Child arrival notification rule</span><span>Smart lock with child's unique code</span></div><div class="gout">Get a text when they're home safe. Automated peace of mind.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gprod"><span>Full kids' floor protection</span><span>Baby monitor Alarm.com integration</span><span>Wandering child door alert</span><span>Pediatric panic button (older kids)</span></div><div class="gout">Total family protection. Every age, every scenario covered.</div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 06 -->
+      <div class="stop" id="s06">
+        <div class="stop-hdr"><div class="stop-num">STOP 06</div><div class="stop-tb"><div class="stop-t">💼 Home Office</div><div class="stop-s">Where livelihood lives — data, equipment, and income</div><div class="stop-g">GOAL: Shift from physical to professional risk. This is their income. Protect it like it.</div></div></div>
+        <div class="tnav"><button class="tbtn look on" data-tp="t06-look">🔍 Look For</button><button class="tbtn ask" data-tp="t06-ask">💬 Ask</button><button class="tbtn crumb" data-tp="t06-crumb">🍞 Drop Crumbs</button><button class="tbtn gbb" data-tp="t06-gbb">✅ G·B·B</button></div>
+        <div class="tpane on" id="t06-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">💻 High-Value Equipment</div><ul><li>Multiple monitors, workstation setup</li><li>Laptops, tablets, external drives</li><li>Camera / AV gear</li><li>Professional tools or instruments</li></ul></div>
+          <div class="lcard"><div class="lcard-t">📁 Data & Access</div><ul><li>Client files visible on desk?</li><li>Locked drawer or not?</li><li>Server rack or NAS storage</li><li>Home-based business signals</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t06-ask"><div class="alist">
+          <div class="aitem"><div class="atype">WFH Reality</div><div class="aq">Do you work from home full-time, or is this more of a side situation?</div><div class="aint"><strong>Intel:</strong> Full-time WFH = massive asset concentration. May need enhanced equipment coverage.</div></div>
+          <div class="aitem"><div class="atype">Insurance Angle</div><div class="aq">Does your homeowner's insurance cover all of this for replacement value? Most standard policies cap business equipment at $2,500.</div><div class="aint"><strong>Intel:</strong> Raises awareness, builds credibility. Indoor camera = theft documentation for claims.</div></div>
+        </div></div>
+        <div class="tpane" id="t06-crumb"><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"One camera here pointing at the door — your insurance claim goes from a fight to a formality."</em></div><div class="cw">Practical, not emotional. Speaks to the analytical brain that runs a home office.</div></div></div>
+        </div></div>
+        <div class="tpane" id="t06-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gprod"><span>Window/door sensors</span><span>Motion detector</span></div><div class="gout">Know if anyone enters when you're not there.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gprod"><span>Indoor HD camera (equipment-facing)</span><span>24/7 recording + cloud backup</span><span>Access control if shared home</span></div><div class="gout">Visual documentation. Deters and proves theft.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gprod"><span>Camera + full sensor suite</span><span>Smart lock on office door</span><span>After-hours notification rules</span></div><div class="gout">Business-grade protection in a residential setting.</div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 07 -->
+      <div class="stop" id="s07">
+        <div class="stop-hdr"><div class="stop-num">STOP 07</div><div class="stop-tb"><div class="stop-t">🏠 Hallways & Stairs</div><div class="stop-s">Every intruder must cross it — the chokepoint</div><div class="stop-g">GOAL: One motion here covers the whole bedroom wing. Establish the motion layer.</div></div></div>
+        <div class="tnav"><button class="tbtn look on" data-tp="t07-look">🔍 Look For</button><button class="tbtn ask" data-tp="t07-ask">💬 Ask</button><button class="tbtn crumb" data-tp="t07-crumb">🍞 Drop Crumbs</button><button class="tbtn gbb" data-tp="t07-gbb">✅ G·B·B</button></div>
+        <div class="tpane on" id="t07-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">📐 Coverage Mapping</div><ul><li>Central hallway — one motion covers all bedrooms?</li><li>Top of stairs — perfect chokepoint location</li><li>Multiple wings? May need 2 motions</li><li>Long corridor — dual-zone needed?</li></ul></div>
+          <div class="lcard"><div class="lcard-t">🐾 Pet Factors</div><ul><li>Large dogs roam at night? Pet-immune needed</li><li>Cats over ~15 lbs trigger standard PIR</li><li>Pet door in hallway? Breach risk</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t07-ask"><div class="alist">
+          <div class="aitem"><div class="atype">Motion Awareness</div><div class="aq">Do you have any pets that roam the house at night? That actually changes what type of detector we'd use.</div><div class="aint"><strong>Intel:</strong> Shows expertise. Opens pet-immune upsell. Member feels like you're customizing, not templating.</div></div>
+        </div></div>
+        <div class="tpane" id="t07-crumb"><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"Contact sensors tell you a door opened. Motion tells you someone's already in the house. You want both."</em></div><div class="cw">Explains the layered concept simply. Moves them toward both sensor types.</div></div></div>
+        </div></div>
+        <div class="tpane" id="t07-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gprod"><span>1 standard PIR motion (hallway)</span></div><div class="gout">Catches anyone past the perimeter layer.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gprod"><span>Pet-immune motion (if pets)</span><span>Top of stairs + main hall</span><span>Auto-light rule on motion at night</span></div><div class="gout">Full interior motion coverage + smart lighting.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gprod"><span>Dual-zone motion coverage</span><span>Motion + smoke/CO combo placement</span><span>Alarm.com "night mode" automation</span></div><div class="gout">Layered detection across every interior zone.</div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 08 -->
+      <div class="stop" id="s08">
+        <div class="stop-hdr"><div class="stop-num">STOP 08</div><div class="stop-tb"><div class="stop-t">🔧 Basement & Utility</div><div class="stop-s">The blind spot — where the expensive problems hide</div><div class="stop-g">GOAL: Expand life safety. Flood, freeze, CO from HVAC — and basement windows are criminally overlooked.</div></div></div>
+        <div class="tnav"><button class="tbtn look on" data-tp="t08-look">🔍 Look For</button><button class="tbtn ask" data-tp="t08-ask">💬 Ask</button><button class="tbtn crumb" data-tp="t08-crumb">🍞 Drop Crumbs</button><button class="tbtn gbb" data-tp="t08-gbb">✅ G·B·B</button></div>
+        <div class="tpane on" id="t08-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">💧 Water Risk</div><ul><li>Sump pump — monitored or manual?</li><li>Water heater age and drip signs</li><li>Washer/dryer hookup — hose condition</li><li>Any prior water damage (staining)</li></ul></div>
+          <div class="lcard"><div class="lcard-t">🔥 HVAC & CO Risk</div><ul><li>Gas furnace or boiler? CO risk zone</li><li>CO detector in utility room?</li><li>Wood-burning insert or pellet stove?</li></ul></div>
+          <div class="lcard"><div class="lcard-t">🚪 Access Points</div><ul><li>Walkout basement door — often just a simple lock</li><li>Basement windows — below grade wells</li><li>Bilco/hatch doors — easily defeated</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t08-ask"><div class="alist">
+          <div class="aitem"><div class="atype">Water History</div><div class="aq">Have you ever had water come in down here? Even just a little during a big storm?</div><div class="aint"><strong>Intel:</strong> Flood sensors are an easy yes for anyone who's had water. "Prevent the next one" is a strong close.</div></div>
+          <div class="aitem"><div class="atype">Sump Reality</div><div class="aq">That sump pump — do you know what happens if it fails while you're on vacation?</div><div class="aint"><strong>Intel:</strong> Practical. Financial. Immediate. Sump monitor is a very easy add-on close.</div></div>
+        </div></div>
+        <div class="tpane" id="t08-crumb"><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"This is where the expensive problems hide. Not the burglar at your front door — it's the slow water leak at 2am while you're asleep upstairs. A $30 sensor catches it. Nothing catches nothing."</em></div><div class="cw">"Nothing catches nothing" is a memorable line.</div></div></div>
+        </div></div>
+        <div class="tpane" id="t08-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gprod"><span>Water sensor (water heater / washer)</span><span>CO detector (furnace zone)</span><span>Basement door sensor</span></div><div class="gout">Basic environmental + perimeter coverage.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gprod"><span>Multiple water sensors (all risk zones)</span><span>Sump pump monitor</span><span>Basement motion + window sensors</span></div><div class="gout">Full flood prevention + intrusion layer below grade.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gprod"><span>All Better +</span><span>Automatic water shutoff valve</span><span>Freeze sensor (pipe zone)</span><span>Alarm.com energy/HVAC monitor</span></div><div class="gout">The house protects itself from water, cold, and intrusion.</div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 09 -->
+      <div class="stop" id="s09">
+        <div class="stop-hdr"><div class="stop-num">STOP 09</div><div class="stop-tb"><div class="stop-t">🚗 Garage</div><div class="stop-s">Top-3 entry point — and most members have nothing on it</div><div class="stop-g">GOAL: Close the garage gap. Show the emergency release hack. They'll never forget it.</div></div></div>
+        <div class="tnav"><button class="tbtn look on" data-tp="t09-look">🔍 Look For</button><button class="tbtn ask" data-tp="t09-ask">💬 Ask</button><button class="tbtn crumb" data-tp="t09-crumb">🍞 Drop Crumbs</button><button class="tbtn gbb" data-tp="t09-gbb">✅ G·B·B</button></div>
+        <div class="tpane on" id="t09-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">🔑 Access Vulnerabilities</div><ul><li>Old-style single-button opener (hackable)</li><li>Garage door to house — locked or open?</li><li>Side entry door — what lock?</li><li>Emergency release cable visible from gap?</li></ul></div>
+          <div class="lcard"><div class="lcard-t">💰 Assets</div><ul><li>Vehicle value (a $40K truck unsensed)</li><li>Power tools, lawn equipment</li><li>Bikes, ATVs, motorcycles</li><li>Fridge/freezer with food stock</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t09-ask"><div class="alist">
+          <div class="aitem"><div class="atype">The Universal Close Setup</div><div class="aq">Have you ever pulled away from the house and then couldn't remember if you closed the garage door?</div><div class="aint"><strong>Intel:</strong> 100% yes. This is the single best setup for the smart garage door controller. Laughs → yes.</div></div>
+        </div></div>
+        <div class="tpane" id="t09-crumb"><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"See that emergency release cable? If I had a wire hook and 6 seconds, I could open this door from outside. We secure that with one sensor and one lock."</em></div><div class="cw">Live demo energy. Creates immediate alarm. Immediately followed by solution = trust built instantly.</div></div></div>
+          <div class="crumb"><div class="cn">02</div><div><div class="cl"><em>"You'll never drive back home to check again. Close it from the office. From vacation. It's done."</em></div><div class="cw">The most satisfying use case for the garage controller. They're nodding before you finish.</div></div></div>
+        </div></div>
+        <div class="tpane" id="t09-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gprod"><span>Garage door sensor (open/close)</span><span>House-to-garage door contact sensor</span></div><div class="gout">Know when either door opens.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gprod"><span>Smart garage door controller</span><span>Open/close remotely from phone</span><span>Auto-close rule (time-based)</span><span>Garage motion detector</span></div><div class="gout">Never wonder if it's closed again. Close from anywhere.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gprod"><span>Smart controller + interior camera</span><span>Side door smart lock</span><span>Emergency release cable guard</span><span>Alarm.com access log</span></div><div class="gout">Full garage command — visual, mechanical, logged.</div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 10 -->
+      <div class="stop" id="s10">
+        <div class="stop-hdr"><div class="stop-num">STOP 10</div><div class="stop-tb"><div class="stop-t">🌿 Backyard & Perimeter</div><div class="stop-s">Where the camera story comes full circle</div><div class="stop-g">GOAL: Complete the perimeter map. Future-pace the full app view. They're closing themselves by now.</div></div></div>
+        <div class="tnav"><button class="tbtn look on" data-tp="t10-look">🔍 Look For</button><button class="tbtn ask" data-tp="t10-ask">💬 Ask</button><button class="tbtn crumb" data-tp="t10-crumb">🍞 Drop Crumbs</button><button class="tbtn gbb" data-tp="t10-gbb">✅ G·B·B</button></div>
+        <div class="tpane on" id="t10-look"><div class="lgrid">
+          <div class="lcard"><div class="lcard-t">🏠 Structure</div><ul><li>Fence line — full perimeter? Gaps?</li><li>Gate locks — padlocked or just latched?</li><li>Pool → strict notification need (liability + child)</li><li>Neighbor proximity (easy to climb fence)</li></ul></div>
+          <div class="lcard"><div class="lcard-t">🎯 Camera Positions</div><ul><li>Back door / patio slider coverage gap?</li><li>Dark zones with no lighting</li><li>Power outlet availability for cameras</li><li>Package delivery zone from rear?</li></ul></div>
+        </div></div>
+        <div class="tpane" id="t10-ask"><div class="alist">
+          <div class="aitem"><div class="atype">Pool Safety</div><div class="aq">With the pool — do you have any kind of alert if a kid or animal gets close to it when no one's back here?</div><div class="aint"><strong>Intel:</strong> Pool camera + perimeter motion is a near-instant close for pool homes with kids.</div></div>
+          <div class="aitem"><div class="atype">The Full Picture</div><div class="aq">By the time we're done today, you're going to be able to see every corner of this property from your phone — front, back, garage, door. How would that change things for you?</div><div class="aint"><strong>Intel:</strong> Future pacing. They imagine the outcome. You're closing in the backyard before you even sit down.</div></div>
+        </div></div>
+        <div class="tpane" id="t10-crumb"><div class="clist">
+          <div class="crumb"><div class="cn">01</div><div><div class="cl"><em>"Cameras don't just record what happened. They prevent it. A thief with a camera over the back door picks a different house."</em></div><div class="cw">Shifts camera from "evidence" to "prevention." Completely changes value perception.</div></div></div>
+          <div class="crumb"><div class="cn">02</div><div><div class="cl"><em>"Alright — I've seen everything I need to see. Let's go sit down and I'll show you exactly what I'd put in this house if it were mine."</em></div><div class="cw">"If it were mine" = ultimate trust signal. Signals the transition to close.</div></div></div>
+        </div></div>
+        <div class="tpane" id="t10-gbb"><div class="ggrid">
+          <div class="gc good"><div class="gt">Good</div><div class="gprod"><span>1 outdoor backyard camera</span><span>Back door contact sensor</span></div><div class="gout">Back entry coverage. Basic perimeter.</div></div>
+          <div class="gc better"><div class="gt">Better</div><div class="gprod"><span>2 outdoor cameras (back + side)</span><span>Motion-activated flood light</span><span>Pool camera (if applicable)</span></div><div class="gout">Full backyard visibility + active deterrence.</div></div>
+          <div class="gc best"><div class="gt">Best</div><div class="gprod"><span>360° outdoor camera perimeter</span><span>Alarm.com perimeter intrusion zones</span><span>Smart flood lights</span><span>Gate sensor + camera combo</span><span>Pool perimeter motion alert</span></div><div class="gout">Nothing enters this property unseen.</div></div>
+        </div></div>
+      </div>
+
+      <!-- STOP 11 — CLOSE -->
+      <div class="stop" id="s11">
+        <div class="stop-hdr"><div class="stop-num">STOP 11</div><div class="stop-tb"><div class="stop-t">✅ Kitchen Table Close</div><div class="stop-s">You walked the house. You dropped every crumb. Now harvest.</div><div class="stop-g">GOAL: Reflect back everything they told you. They should feel like they designed this themselves.</div></div></div>
+        <div class="abox tip"><span class="ai">💡</span><div>You are not starting a new conversation at this table. You are completing one that began in the driveway. Every breadcrumb you dropped is now a ripe callback. Use them.</div></div>
+        <div class="closer">
+          <h3>🔁 The Callback Framework</h3>
+          <p>Open your presentation by reflecting back what they told you. Use their exact words.</p>
+          <div class="cline">So we walked through the whole house. Here's what I heard — you told me [CONCERN 1], you mentioned [CONCERN 2], and I noticed [OBSERVATION]. Here's exactly what I'd do.</div>
+          <div class="cline">You asked about the kids getting home — we handle that right here. You said the garage drives you crazy — handled. That sliding door had nothing on it — covered.</div>
+          <div class="cline">Let me show you three options. I'm going to start with the one I'd put in my own house — then show you what we can do if budget needs to flex.</div>
+        </div>
+        <div class="sdiv">Presentation Order</div>
+        <div class="ggrid">
+          <div class="gc best"><div class="gt">Best — Start Here</div><div class="gprod"><span>Full system — everything from the walkthrough</span><span>All pain points addressed</span><span>Professional monitoring 24/7</span><span>Alarm.com full visibility</span></div><div class="gout">"This is the complete picture. This is peace of mind."</div></div>
+          <div class="gc better"><div class="gt">Better — If They Step</div><div class="gprod"><span>Core sensors + 2 cameras</span><span>Smart lock + monitoring</span><span>Life safety included</span></div><div class="gout">"Covers everything critical. Strong starting point."</div></div>
+          <div class="gc good"><div class="gt">Good — Floor</div><div class="gprod"><span>Entry sensors + panel + monitoring</span><span>Mobile app access</span></div><div class="gout">"We can always add. Let's start here and grow."</div></div>
+          <div class="grec"><div class="grec-lbl">The Rule</div><div>Never start at Good and work up. Always start at Best and let them step down by choice. Most members stay at Better or Best when you lead there.</div></div>
+        </div>
+        <div class="sdiv">Money Reframes</div>
+        <div class="closer">
+          <h3>💰 Price Handling Language</h3>
+          <div class="cline">That's under a dollar a day. What else in your life does this much for under a dollar a day?</div>
+          <div class="cline">Think about what you pay for streaming services you forget about. This is less — and it's protecting your family.</div>
+          <div class="cline">This isn't a cost. It's a decision about what your family is worth to you — and I already know the answer from what you showed me today.</div>
+          <div class="cline">Let's get this scheduled. I can have a tech out here [next available day]. Morning or afternoon?</div>
+        </div>
+      </div>
+
+      <!-- STOP 12 — OBJECTIONS -->
+      <div class="stop" id="s12">
+        <div class="stop-hdr"><div class="stop-num">STOP 12</div><div class="stop-tb"><div class="stop-t">🏆 Objection Playbook</div><div class="stop-s">Every objection is a question that hasn't been answered yet</div><div class="stop-g">GOAL: L.A.C.E. — Listen · Acknowledge · Counter · Earn. Never argue. Redirect to emotion.</div></div></div>
+        <div class="alist">
+          <div class="aitem" style="border-left-color:var(--red)"><div class="atype" style="color:var(--red)">Objection: Price</div><div class="aq">It's a little more than I was thinking.</div><div class="aint"><strong>L.A.C.E.:</strong> "I hear you — I want to make sure you're comfortable. When you walked me through [kids' rooms / master bedroom], what was going through your mind? That's exactly what this protects. Let's look at where we can adjust without taking away what matters most."</div></div>
+          <div class="aitem" style="border-left-color:var(--red)"><div class="atype" style="color:var(--red)">Objection: Need to Think About It</div><div class="aq">I want to talk to my spouse / think about it first.</div><div class="aint"><strong>L.A.C.E.:</strong> "Of course — is there anything that wasn't clear, or something that doesn't feel right? Because if everything makes sense, the only thing waiting does is leave you unprotected tonight. Let's schedule — you can cancel in 24 hours if you change your mind."</div></div>
+          <div class="aitem" style="border-left-color:var(--red)"><div class="atype" style="color:var(--red)">Objection: "We're Safe Here"</div><div class="aq">This neighborhood is pretty quiet. Nothing really happens here.</div><div class="aint"><strong>L.A.C.E.:</strong> "I'm glad — let's keep it that way. The homes that get hit in quiet neighborhoods are exactly the ones without visible security. You become the easy target. The camera on your door changes that instantly."</div></div>
+          <div class="aitem" style="border-left-color:var(--red)"><div class="atype" style="color:var(--red)">Objection: Already Have a System</div><div class="aq">We already have ADT / Ring / something.</div><div class="aint"><strong>L.A.C.E.:</strong> "Good — you already know the value. Let me ask: is it actively monitored? Are cameras, locks, and alarm in one app? What I saw today has gaps your current system isn't covering. Let me show you what's missing."</div></div>
+          <div class="aitem" style="border-left-color:var(--red)"><div class="atype" style="color:var(--red)">Objection: Contract Length</div><div class="aq">I don't want to be locked in long-term.</div><div class="aint"><strong>L.A.C.E.:</strong> "Completely fair. The agreement is what makes the equipment pricing work — without it, same gear is 3x upfront. Most members never want to leave once it's installed. Let's talk about what terms work for you."</div></div>
+        </div>
+        <div class="sdiv">The True North Close</div>
+        <div class="closer">
+          <h3>🎯 The True North Close</h3>
+          <div class="cline">I walked through every room with you today. I saw your kids' rooms. I saw your master bedroom. I saw everything you've built here. You already know what the right answer is. I'm just here to make it easy for you to say yes.</div>
+        </div>
+      </div>
+
+    </div><!-- /g-content -->
+  </div><!-- /guide-main -->
+</div><!-- /panel-guide -->
+
+<!-- ================================================================
+     DEMO PANEL
+================================================================ -->
+<div class="panel" id="panel-demo">
+  <div class="dhdr">
+    <div class="deye">AAA Smart Security · Field Ops · Demo Scenario System</div>
+    <h1>DEMO SCENARIOS<br><span>ROOM LAYOUTS · SENSOR MAPS · EMOTIONAL ANCHORS</span></h1>
+    <div class="dsub">Architecture drawings, coverage diagrams, device scenarios, emotional trigger maps, and storyboard demos — with Good · Better · Best at every decision point.</div>
+  </div>
+  <div class="dtabs">
+    <button class="dtab on"  onclick="dTab('fp',this)">🏠 Floor Plans</button>
+    <button class="dtab"     onclick="dTab('sc',this)">📋 Scenario Cards</button>
+    <button class="dtab"     onclick="dTab('dv',this)">🔧 Device Specs</button>
+    <button class="dtab"     onclick="dTab('em',this)">❤️ Emotion Map</button>
+    <button class="dtab"     onclick="dTab('sb',this)">🎬 Storyboard</button>
+    <button class="dtab"     onclick="dTab('ar',this)">📐 Architecture</button>
+  </div>
+  <div class="dmain">
+
+    <!-- FLOOR PLANS -->
+    <div class="dpage on" id="dp-fp">
+      <div class="dsec-t">Floor Plan Sensor Placement Diagrams</div>
+      <div class="dsec-s">Three home types with sensor overlays. Click a sensor type to highlight zones.</div>
+      <div class="legend">
+        <div class="leg on"  onclick="fLayer('all',this)"><div class="leg-dot" style="background:#fff"></div>All Sensors</div>
+        <div class="leg" onclick="fLayer('motion',this)"><div class="leg-dot" style="background:var(--motion)"></div>Motion</div>
+        <div class="leg" onclick="fLayer('camera',this)"><div class="leg-dot" style="background:var(--camera)"></div>Camera</div>
+        <div class="leg" onclick="fLayer('contact',this)"><div class="leg-dot" style="background:var(--contact)"></div>Door/Window</div>
+        <div class="leg" onclick="fLayer('glass',this)"><div class="leg-dot" style="background:var(--glass)"></div>Glass Break</div>
+        <div class="leg" onclick="fLayer('water',this)"><div class="leg-dot" style="background:var(--water)"></div>Water/Flood</div>
+        <div class="leg" onclick="fLayer('smoke',this)"><div class="leg-dot" style="background:var(--smoke)"></div>Smoke/CO</div>
+        <div class="leg" onclick="fLayer('panic',this)"><div class="leg-dot" style="background:var(--panic)"></div>Panic</div>
+      </div>
+      <div class="fpgrid">
+        <!-- RANCH -->
+        <div class="fpc">
+          <div class="fph"><div class="fpt">🏠 Ranch / Single Story</div><div class="fpbadge">~1,800 sq ft</div></div>
+          <div class="fpbody">
+            <div class="fpsvg">
+              <svg viewBox="0 0 560 360" width="100%" xmlns="http://www.w3.org/2000/svg">
+                <rect width="560" height="360" fill="#070a10"/>
+                <!-- Rooms -->
+                <rect x="10" y="210" width="138" height="140" class="rf"/><rect x="10" y="210" width="138" height="140" class="rw"/><text x="79" y="280" class="rl" text-anchor="middle">GARAGE</text>
+                <line x1="10" y1="350" x2="148" y2="350" stroke="#f5a623" stroke-width="3" opacity=".4"/>
+                <rect x="153" y="210" width="128" height="140" class="rf"/><rect x="153" y="210" width="128" height="140" class="rw"/><text x="217" y="280" class="rl" text-anchor="middle">KITCHEN</text>
+                <line x1="153" y1="268" x2="153" y2="295" stroke="#070a10" stroke-width="4"/><path d="M153,268 Q172,268 172,287" fill="none" stroke="#2a3550" stroke-width="1.5" stroke-dasharray="3,2"/>
+                <rect x="285" y="210" width="165" height="140" class="rf"/><rect x="285" y="210" width="165" height="140" class="rw"/><text x="367" y="280" class="rl" text-anchor="middle">LIVING ROOM</text>
+                <line x1="370" y1="350" x2="450" y2="350" stroke="#3a8dde" stroke-width="2.5" opacity=".5"/>
+                <rect x="10" y="10" width="178" height="125" class="rf"/><rect x="10" y="10" width="178" height="125" class="rw"/><text x="99" y="72" class="rl" text-anchor="middle">MASTER BEDROOM</text>
+                <line x1="40" y1="10" x2="110" y2="10" class="wl"/>
+                <rect x="193" y="10" width="138" height="105" class="rf"/><rect x="193" y="10" width="138" height="105" class="rw"/><text x="262" y="62" class="rl" text-anchor="middle">BED 2</text>
+                <line x1="210" y1="10" x2="270" y2="10" class="wl"/>
+                <rect x="336" y="10" width="114" height="105" class="rf"/><rect x="336" y="10" width="114" height="105" class="rw"/><text x="393" y="62" class="rl" text-anchor="middle">BED 3</text>
+                <line x1="352" y1="10" x2="412" y2="10" class="wl"/>
+                <rect x="450" y="10" width="100" height="200" class="ext" rx="2"/><text x="500" y="110" class="rl" text-anchor="middle" fill="#1e2a40" font-size="9">FRONT</text>
+                <text x="500" y="122" class="rl" text-anchor="middle" fill="#1e2a40" font-size="9">PORCH</text>
+                <line x1="450" y1="115" x2="450" y2="150" stroke="#070a10" stroke-width="4"/><path d="M450,115 Q468,115 468,133" fill="none" stroke="#2a3550" stroke-width="1.5" stroke-dasharray="3,2"/>
+                <rect x="192" y="115" width="142" height="95" class="rf"/><text x="263" y="165" class="rl" text-anchor="middle">HALLWAY</text>
+                <rect x="10" y="168" width="440" height="42" fill="#0a0e18" stroke="#1a2438" stroke-width="1" stroke-dasharray="3,3" rx="2"/><text x="225" y="193" class="rl" text-anchor="middle" fill="#1e2a40">BACKYARD</text>
+                <!-- MOTION -->
+                <g class="layer-motion">
+                  <ellipse cx="263" cy="158" rx="66" ry="40" class="zm"/><circle cx="263" cy="142" r="7" class="sm"/><text x="263" y="146" text-anchor="middle" font-size="9" fill="white">M</text>
+                  <ellipse cx="358" cy="285" rx="55" ry="45" class="zm"/><circle cx="449" cy="214" r="7" class="sm"/><text x="449" y="218" text-anchor="middle" font-size="9" fill="white">M</text>
+                  <circle cx="148" cy="214" r="7" class="sm"/><text x="148" y="218" text-anchor="middle" font-size="9" fill="white">M</text>
+                </g>
+                <!-- CAMERA -->
+                <g class="layer-camera">
+                  <polygon points="450,110 540,60 540,165" class="zc" opacity=".12"/>
+                  <circle cx="453" cy="114" r="7" class="sc"/><text x="453" y="118" text-anchor="middle" font-size="9" fill="#030303">C</text><text x="475" y="110" class="rl" fill="var(--camera)" font-size="8">DOORBELL</text>
+                  <circle cx="60" cy="210" r="7" class="sc"/><text x="60" y="214" text-anchor="middle" font-size="9" fill="#030303">C</text><text x="60" y="204" class="rl" fill="var(--camera)" text-anchor="middle" font-size="8">DRIVEWAY</text>
+                  <circle cx="367" cy="208" r="7" class="sc"/><text x="367" y="212" text-anchor="middle" font-size="9" fill="#030303">C</text><text x="367" y="202" class="rl" fill="var(--camera)" text-anchor="middle" font-size="8">BACKYARD</text>
+                </g>
+                <!-- CONTACT -->
+                <g class="layer-contact">
+                  <rect x="453" y="118" width="11" height="5" rx="2" class="sk"/>
+                  <rect x="408" y="345" width="11" height="5" rx="2" class="sk"/>
+                  <rect x="68" y="7" width="11" height="5" rx="2" class="sk"/>
+                  <rect x="228" y="7" width="11" height="5" rx="2" class="sk"/>
+                  <rect x="368" y="7" width="11" height="5" rx="2" class="sk"/>
+                  <rect x="147" y="263" width="5" height="11" rx="2" class="sk"/>
+                </g>
+                <!-- GLASS BREAK -->
+                <g class="layer-glass">
+                  <circle cx="370" cy="230" r="32" class="zg" opacity=".14"/><circle cx="370" cy="230" r="7" class="sg"/><text x="370" y="234" text-anchor="middle" font-size="9" fill="white">G</text>
+                </g>
+                <!-- WATER -->
+                <g class="layer-water">
+                  <rect x="163" y="335" width="18" height="7" rx="2" class="sw"/><text x="172" y="350" class="rl" fill="var(--water)" text-anchor="middle" font-size="7">H₂O</text>
+                </g>
+                <!-- SMOKE -->
+                <g class="layer-smoke">
+                  <circle cx="99" cy="62" r="7" class="ss"/><text x="99" y="66" text-anchor="middle" font-size="9" fill="white">S</text>
+                  <circle cx="262" cy="40" r="7" class="ss"/><text x="262" y="44" text-anchor="middle" font-size="9" fill="white">S</text>
+                  <circle cx="217" cy="248" r="7" class="ss"/><text x="217" y="252" text-anchor="middle" font-size="9" fill="white">CO</text>
+                </g>
+                <!-- PANIC -->
+                <g class="layer-panic">
+                  <rect x="10" y="88" width="13" height="9" rx="2" class="sp"/><text x="16" y="83" class="rl" fill="var(--panic)" text-anchor="middle" font-size="7">PANIC</text>
+                </g>
+              </svg>
+            </div>
+            <div class="fpnote"><strong>Key vulnerabilities:</strong> Slider door unsensed, garage-to-kitchen door rarely covered, master window ground-accessible. Hallway motion covers all 3 bedrooms from one point.</div>
+          </div>
+        </div>
+        <!-- TWO STORY -->
+        <div class="fpc">
+          <div class="fph"><div class="fpt">🏡 Two-Story Colonial</div><div class="fpbadge">~2,400 sq ft</div></div>
+          <div class="fpbody">
+            <div class="fpsvg">
+              <svg viewBox="0 0 560 390" width="100%" xmlns="http://www.w3.org/2000/svg">
+                <rect width="560" height="390" fill="#070a10"/>
+                <text x="140" y="18" class="rl" text-anchor="middle" fill="#2a3550" font-size="9">── FIRST FLOOR ──</text>
+                <rect x="10" y="26" width="128" height="148" class="rf"/><rect x="10" y="26" width="128" height="148" class="rw"/><text x="74" y="100" class="rl" text-anchor="middle">GARAGE</text>
+                <line x1="10" y1="174" x2="138" y2="174" stroke="#f5a623" stroke-width="3" opacity=".4"/>
+                <rect x="142" y="26" width="100" height="78" class="rf"/><rect x="142" y="26" width="100" height="78" class="rw"/><text x="192" y="68" class="rl" text-anchor="middle">FOYER</text>
+                <line x1="242" y1="26" x2="242" y2="54" stroke="#070a10" stroke-width="4"/><path d="M242,26 Q260,26 260,44" fill="none" stroke="#2a3550" stroke-width="1.5" stroke-dasharray="3,2"/>
+                <rect x="142" y="108" width="128" height="65" class="rf"/><rect x="142" y="108" width="128" height="65" class="rw"/><text x="206" y="143" class="rl" text-anchor="middle">KITCHEN</text>
+                <rect x="274" y="26" width="98" height="78" class="rf"/><rect x="274" y="26" width="98" height="78" class="rw"/><text x="323" y="68" class="rl" text-anchor="middle">DINING</text>
+                <rect x="274" y="108" width="178" height="65" class="rf"/><rect x="274" y="108" width="178" height="65" class="rw"/><text x="363" y="143" class="rl" text-anchor="middle">LIVING ROOM</text>
+                <line x1="370" y1="173" x2="452" y2="173" stroke="#3a8dde" stroke-width="2" opacity=".5"/>
+                <rect x="376" y="26" width="78" height="78" class="rf"/><rect x="376" y="26" width="78" height="78" class="rw"/><text x="415" y="65" class="rl" text-anchor="middle">STAIRS</text>
+                <line x1="383" y1="36" x2="447" y2="36" stroke="#2a3550" stroke-width="1"/><line x1="383" y1="46" x2="447" y2="46" stroke="#2a3550" stroke-width="1"/><line x1="383" y1="56" x2="447" y2="56" stroke="#2a3550" stroke-width="1"/><line x1="383" y1="66" x2="447" y2="66" stroke="#2a3550" stroke-width="1"/><line x1="383" y1="76" x2="447" y2="76" stroke="#2a3550" stroke-width="1"/>
+                <rect x="456" y="26" width="94" height="148" class="rf"/><rect x="456" y="26" width="94" height="148" class="rw"/><text x="503" y="100" class="rl" text-anchor="middle">FRONT</text><text x="503" y="112" class="rl" text-anchor="middle">ENTRY</text>
+                <rect x="10" y="178" width="440" height="28" fill="#0a0e18" stroke="#1a2438" stroke-width="1" stroke-dasharray="3,3"/><text x="225" y="196" class="rl" text-anchor="middle" fill="#1e2a40">BACKYARD / PATIO</text>
+                <text x="395" y="225" class="rl" text-anchor="middle" fill="#2a3550" font-size="9">── SECOND FLOOR ──</text>
+                <rect x="10" y="232" width="178" height="138" class="rf"/><rect x="10" y="232" width="178" height="138" class="rw"/><text x="99" y="300" class="rl" text-anchor="middle">MASTER BEDROOM</text>
+                <line x1="38" y1="232" x2="118" y2="232" class="wl"/>
+                <rect x="192" y="232" width="128" height="98" class="rf"/><rect x="192" y="232" width="128" height="98" class="rw"/><text x="256" y="282" class="rl" text-anchor="middle">BED 2</text>
+                <line x1="212" y1="232" x2="272" y2="232" class="wl"/>
+                <rect x="324" y="232" width="118" height="98" class="rf"/><rect x="324" y="232" width="118" height="98" class="rw"/><text x="383" y="282" class="rl" text-anchor="middle">BED 3</text>
+                <rect x="445" y="232" width="105" height="138" class="rf"/><rect x="445" y="232" width="105" height="138" class="rw"/><text x="497" y="300" class="rl" text-anchor="middle">OFFICE</text>
+                <rect x="192" y="334" width="252" height="36" class="rf"/><text x="318" y="356" class="rl" text-anchor="middle">UPSTAIRS HALLWAY</text>
+                <!-- sensors 2-story -->
+                <g class="layer-motion">
+                  <ellipse cx="192" cy="103" rx="42" ry="36" class="zm"/><circle cx="192" cy="96" r="7" class="sm"/><text x="192" y="100" text-anchor="middle" font-size="9" fill="white">M</text>
+                  <ellipse cx="318" cy="355" rx="52" ry="14" class="zm"/><circle cx="318" cy="342" r="7" class="sm"/><text x="318" y="346" text-anchor="middle" font-size="9" fill="white">M</text>
+                </g>
+                <g class="layer-camera">
+                  <circle cx="244" cy="28" r="7" class="sc"/><text x="244" y="32" text-anchor="middle" font-size="9" fill="#030303">C</text>
+                  <circle cx="88" cy="176" r="7" class="sc"/><text x="88" y="180" text-anchor="middle" font-size="9" fill="#030303">C</text>
+                </g>
+                <g class="layer-contact">
+                  <rect x="246" y="24" width="11" height="5" rx="2" class="sk"/>
+                  <rect x="382" y="173" width="11" height="5" rx="2" class="sk"/>
+                  <rect x="48" y="228" width="11" height="5" rx="2" class="sk"/>
+                  <rect x="222" y="228" width="11" height="5" rx="2" class="sk"/>
+                </g>
+                <g class="layer-glass">
+                  <circle cx="345" cy="120" r="35" class="zg" opacity=".1"/><circle cx="345" cy="120" r="7" class="sg"/><text x="345" y="124" text-anchor="middle" font-size="9" fill="white">G</text>
+                </g>
+                <g class="layer-smoke">
+                  <circle cx="74" cy="100" r="7" class="ss"/><text x="74" y="104" text-anchor="middle" font-size="9" fill="white">S</text>
+                  <circle cx="206" cy="140" r="7" class="ss"/><text x="206" y="144" text-anchor="middle" font-size="9" fill="white">CO</text>
+                  <circle cx="99" cy="258" r="7" class="ss"/><text x="99" y="262" text-anchor="middle" font-size="9" fill="white">S</text>
+                </g>
+                <g class="layer-panic"><rect x="10" y="270" width="13" height="9" rx="2" class="sp"/></g>
+                <g class="layer-water"><rect x="148" y="160" width="17" height="6" rx="2" class="sw"/></g>
+              </svg>
+            </div>
+            <div class="fpnote"><strong>Two-story strategy:</strong> Top-of-stair motion = chokepoint for entire upstairs. Foyer motion catches any first-floor intrusion. Upstairs and downstairs smoke must interconnect.</div>
+          </div>
+        </div>
+      </div>
+      <div class="abox warn"><span class="ai">⚡</span><div><strong>Reading the Diagrams:</strong> Orange zones = motion sweep · Teal zones = camera field · Purple = glass break radius · Blue = water risk. Letter codes: M=Motion C=Camera G=Glass Break S=Smoke CO=Carbon Monoxide. Rectangles on door/window frames = contact sensors.</div></div>
+    </div>
+
+    <!-- SCENARIO CARDS -->
+    <div class="dpage" id="dp-sc">
+      <div class="dsec-t">Scenario Cards</div>
+      <div class="dsec-s">Real-world scenarios — what triggered it, what device solves it, what emotion to anchor, and the exact close line.</div>
+      <div class="scgrid">
+        <div class="scard"><div class="sct"><div class="scnum">SCENARIO · 01</div><div class="scname">Kids Home Alone After School</div><div class="scroom">📍 Front Door / Entry</div></div><div class="scb"><div class="scrow"><div class="sclbl">WHEN</div><div class="scval">Parent at work 3:00–6:00pm daily</div></div><div class="scrow"><div class="sclbl">WHAT</div><div class="scval"><span class="stag st-k">Smart Lock</span><span class="stag st-c">Doorbell Cam</span></div></div><div class="scrow"><div class="sclbl">WHY</div><div class="scval">Parent gets instant notification: "Jake used his code at 3:14pm" + live video clip</div></div><div class="scemo"><div class="sclbl">EMOTION</div><div class="scval">Parental anxiety → instant certainty. "They're home safe" without a call that goes unanswered.</div></div><div class="scgbb"><div class="gchip ch-g">Doorbell alert</div><div class="gchip ch-b">Smart lock + code</div><div class="gchip ch-x">Auto notify + clip</div></div><div class="sccl">Imagine getting that notification right now — their face on your phone. That's what this does.</div></div></div>
+        <div class="scard"><div class="sct"><div class="scnum">SCENARIO · 02</div><div class="scname">Garage Door Left Open Overnight</div><div class="scroom">📍 Garage</div></div><div class="scb"><div class="scrow"><div class="sclbl">WHEN</div><div class="scval">After evening arrival, forgot to check</div></div><div class="scrow"><div class="sclbl">WHAT</div><div class="scval"><span class="stag st-k">Garage Controller</span><span class="stag st-c">Driveway Cam</span></div></div><div class="scrow"><div class="sclbl">WHY</div><div class="scval">Auto-close rule after 10pm OR remote close from phone from anywhere in the world</div></div><div class="scemo"><div class="sclbl">EMOTION</div><div class="scval">That nagging anxiety driving to work. "Did I close it?" — eliminated forever.</div></div><div class="scgbb"><div class="gchip ch-g">Open/close sensor</div><div class="gchip ch-b">Remote app control</div><div class="gchip ch-x">Auto-close + cam</div></div><div class="sccl">You'll never drive back home to check again. Close it from the office. Close it from vacation.</div></div></div>
+        <div class="scard"><div class="sct"><div class="scnum">SCENARIO · 03</div><div class="scname">3AM Noise — Unknown Threat</div><div class="scroom">📍 Master Bedroom</div></div><div class="scb"><div class="scrow"><div class="sclbl">WHEN</div><div class="scval">Middle of the night, unknown sound</div></div><div class="scrow"><div class="sclbl">WHAT</div><div class="scval"><span class="stag st-m">Hall Motion</span><span class="stag st-c">Indoor Cam</span><span class="stag st-p">Panic Button</span></div></div><div class="scrow"><div class="sclbl">WHY</div><div class="scval">Motion triggers alert + live camera feed to phone before they get up. Know before moving.</div></div><div class="scemo"><div class="sclbl">EMOTION</div><div class="scval">Fear of the unknown → instant certainty. Check your phone before reacting.</div></div><div class="scgbb"><div class="gchip ch-g">Motion alert</div><div class="gchip ch-b">Camera + motion</div><div class="gchip ch-x">Panic + 2-way voice</div></div><div class="sccl">You're not alone in that moment. We're watching with you. One press and help is 4 minutes away.</div></div></div>
+        <div class="scard"><div class="sct"><div class="scnum">SCENARIO · 04</div><div class="scname">Dishwasher Slow Leak</div><div class="scroom">📍 Kitchen</div></div><div class="scb"><div class="scrow"><div class="sclbl">WHEN</div><div class="scval">Undetected for hours, subfloor damage</div></div><div class="scrow"><div class="sclbl">WHAT</div><div class="scval"><span class="stag st-w">Water Sensor</span></div></div><div class="scrow"><div class="sclbl">WHY</div><div class="scval">First drop triggers alert. Catches it in minutes vs. days. Avg water damage claim: $11,000.</div></div><div class="scemo"><div class="sclbl">EMOTION</div><div class="scval">Financial protection. $30 sensor vs $11K claim. Math writes itself.</div></div><div class="scgbb"><div class="gchip ch-g">1 sensor</div><div class="gchip ch-b">3 sensors all zones</div><div class="gchip ch-x">Auto shutoff valve</div></div><div class="sccl">One member caught it before it hit the subfloor. That sensor paid for five years of service.</div></div></div>
+        <div class="scard"><div class="sct"><div class="scnum">SCENARIO · 05</div><div class="scname">Sliding Glass Door — Forgotten</div><div class="scroom">📍 Living Room / Back</div></div><div class="scb"><div class="scrow"><div class="sclbl">WHEN</div><div class="scval">Every home tour — almost never sensed</div></div><div class="scrow"><div class="sclbl">WHAT</div><div class="scval"><span class="stag st-k">Slider Sensor</span><span class="stag st-k">Pin Lock Bar</span><span class="stag st-c">Backyard Cam</span></div></div><div class="scrow"><div class="sclbl">WHY</div><div class="scval">2nd most common home entry point. Lift-and-slide can bypass standard locks.</div></div><div class="scemo"><div class="sclbl">EMOTION</div><div class="scval">"I never even thought about that door" — visible relief. You just protected a forgotten gap.</div></div><div class="scgbb"><div class="gchip ch-g">Contact sensor</div><div class="gchip ch-b">Sensor + pin bar</div><div class="gchip ch-x">Sensor + bar + cam</div></div><div class="sccl">Nine out of ten homes I walk — nothing on this door. Let's make yours the tenth.</div></div></div>
+        <div class="scard"><div class="sct"><div class="scnum">SCENARIO · 06</div><div class="scname">CO Poisoning While Family Sleeps</div><div class="scroom">📍 Kitchen / Utility</div></div><div class="scb"><div class="scrow"><div class="sclbl">WHEN</div><div class="scval">Gas appliance malfunction, any hour</div></div><div class="scrow"><div class="sclbl">WHAT</div><div class="scval"><span class="stag st-s">Monitored CO Detector</span></div></div><div class="scrow"><div class="sclbl">WHY</div><div class="scval">CO is odorless/colorless. Monitored = dispatch even if family is incapacitated and can't call.</div></div><div class="scemo"><div class="sclbl">EMOTION</div><div class="scval">Primal family protection. "They won't wake up in time" — this calls for help even if they can't.</div></div><div class="scgbb"><div class="gchip ch-g">1 CO detector</div><div class="gchip ch-b">CO + smoke combo</div><div class="gchip ch-x">Whole-home network</div></div><div class="sccl">You have a gas range. CO is invisible. A monitored detector calls 911 even if everyone is unconscious.</div></div></div>
+        <div class="scard"><div class="sct"><div class="scnum">SCENARIO · 07</div><div class="scname">Toddler Wanders to Exit Door at Night</div><div class="scroom">📍 Any Exterior Door</div></div><div class="scb"><div class="scrow"><div class="sclbl">WHEN</div><div class="scval">2–4am, parents asleep, child mobile</div></div><div class="scrow"><div class="sclbl">WHAT</div><div class="scval"><span class="stag st-k">Door Sensor + Chime</span><span class="stag st-m">Hall Motion</span></div></div><div class="scrow"><div class="sclbl">WHY</div><div class="scval">Audible chime + phone alert the second any exterior door is touched. Before it opens.</div></div><div class="scemo"><div class="sclbl">EMOTION</div><div class="scval">Terror. Every young parent's worst nightmare. One sensor eliminates it completely.</div></div><div class="scgbb"><div class="gchip ch-g">Door chime only</div><div class="gchip ch-b">Chime + phone alert</div><div class="gchip ch-x">Chime + motion + cam</div></div><div class="sccl">Parents with toddlers: this one sensor alone is worth the entire install. Period.</div></div></div>
+        <div class="scard"><div class="sct"><div class="scnum">SCENARIO · 08</div><div class="scname">Sump Pump Failure on Vacation</div><div class="scroom">📍 Basement / Utility</div></div><div class="scb"><div class="scrow"><div class="sclbl">WHEN</div><div class="scval">Heavy rain, homeowner out of town, pump fails</div></div><div class="scrow"><div class="sclbl">WHAT</div><div class="scval"><span class="stag st-w">Sump Monitor</span><span class="stag st-w">Flood Sensor</span></div></div><div class="scrow"><div class="sclbl">WHY</div><div class="scval">Alert fires before water reaches flooring. Neighbor dispatched same day vs. 3" of water on return.</div></div><div class="scemo"><div class="sclbl">EMOTION</div><div class="scval">Vacation peace: "the house is covered even when I'm not there."</div></div><div class="scgbb"><div class="gchip ch-g">Floor flood sensor</div><div class="gchip ch-b">Sump + sensor</div><div class="gchip ch-x">Auto shutoff + backup</div></div><div class="sccl">If that pump fails while you're gone, we know before you do.</div></div></div>
+        <div class="scard"><div class="sct"><div class="scnum">SCENARIO · 09</div><div class="scname">Glass Break — WFH Smash & Grab</div><div class="scroom">📍 Living Room / Home Office</div></div><div class="scb"><div class="scrow"><div class="sclbl">WHEN</div><div class="scval">Work-from-home, smash-and-grab attempt</div></div><div class="scrow"><div class="sclbl">WHAT</div><div class="scval"><span class="stag st-g">Glass Break Sensor</span><span class="stag st-c">Indoor Camera</span></div></div><div class="scrow"><div class="sclbl">WHY</div><div class="scval">Triggers alarm before intruder is in the room. One unit covers 20ft radius.</div></div><div class="scemo"><div class="sclbl">EMOTION</div><div class="scval">False security of being home. "I thought I was safe." Glass break extends protection 24/7.</div></div><div class="scgbb"><div class="gchip ch-g">1 glass break</div><div class="gchip ch-b">GB + window sensors</div><div class="gchip ch-x">GB + sensors + cam</div></div><div class="sccl">Alarm fires before they clear the broken glass. You're already ahead of them.</div></div></div>
+        <div class="scard"><div class="sct"><div class="scnum">SCENARIO · 10</div><div class="scname">Package Theft — Front Porch</div><div class="scroom">📍 Front Entry / Porch</div></div><div class="scb"><div class="scrow"><div class="sclbl">WHEN</div><div class="scval">Post-delivery, before homeowner returns</div></div><div class="scrow"><div class="sclbl">WHAT</div><div class="scval"><span class="stag st-c">Doorbell Cam</span><span class="stag st-c">Porch Cam</span></div></div><div class="scrow"><div class="sclbl">WHY</div><div class="scval">Delivery zone detection notifies at drop. Video stored = police evidence. Deters repeat.</div></div><div class="scemo"><div class="sclbl">EMOTION</div><div class="scval">Helplessness → control. "I can see my packages sitting there right now."</div></div><div class="scgbb"><div class="gchip ch-g">Doorbell cam</div><div class="gchip ch-b">Doorbell + porch angle</div><div class="gchip ch-x">Package zone AI alert</div></div><div class="sccl">Amazon boxes on your porch are an invitation. A camera turns your porch into the wrong house.</div></div></div>
+      </div>
+    </div>
+
+    <!-- DEVICE SPECS -->
+    <div class="dpage" id="dp-dv">
+      <div class="dsec-t">Device Reference</div>
+      <div class="dsec-s">Coverage specs, mounting rules, placement dos and don'ts, and emotional anchor for every sensor type.</div>
+      <table class="dtbl">
+        <thead><tr><th>Device</th><th>Coverage</th><th>Best Location</th><th>Avoid</th><th>Emotional Anchor</th><th>G · B · Best</th></tr></thead>
+        <tbody>
+          <tr><td><span class="stag st-m">PIR Motion</span></td><td>90° × 40ft. Corner mount = max. Pet-immune: &lt;50lb tolerance.</td><td>Top corners of hallways, stairwells, 7–8ft height.</td><td>Facing windows, HVAC vents, pet roam zones.</td><td>3AM scenario, chokepoint coverage, silent interior layer</td><td><strong style="color:var(--green)">G:</strong> 1 hallway <strong style="color:var(--blue)">B:</strong> Hall+room <strong style="color:var(--gold)">Best:</strong> All zones+pet-immune</td></tr>
+          <tr><td><span class="stag st-c">Indoor Camera</span></td><td>120–180° wide, 1080p+, night vision 20ft, two-way audio.</td><td>Living room corners, kitchen entry, above stairwells.</td><td>Bedrooms (privacy), bathrooms, direct sun facing.</td><td>Visual verification, WFH protection, break-in documentation</td><td><strong style="color:var(--green)">G:</strong> Living area <strong style="color:var(--blue)">B:</strong> +entry zones <strong style="color:var(--gold)">Best:</strong> Full+cloud</td></tr>
+          <tr><td><span class="stag st-c">Outdoor Camera</span></td><td>140°+ wide, IP65+, color night vision, motion zones.</td><td>Eaves facing driveway, back corners, above garage.</td><td>Pointing toward street lights, below 8ft (reachable).</td><td>Package theft, driveway surveillance, perimeter deterrence</td><td><strong style="color:var(--green)">G:</strong> Front only <strong style="color:var(--blue)">B:</strong> Front+back <strong style="color:var(--gold)">Best:</strong> 360°</td></tr>
+          <tr><td><span class="stag st-c">Video Doorbell</span></td><td>160°+ field, live view, motion zones, package detection.</td><td>Front door, ~48" height, angled for approach.</td><td>Side doors without full approach view.</td><td>Kids arriving, visitor screening, delivery confirmation</td><td><strong style="color:var(--green)">G:</strong> Basic <strong style="color:var(--blue)">B:</strong> +cloud record <strong style="color:var(--gold)">Best:</strong> +smart lock</td></tr>
+          <tr><td><span class="stag st-k">Door/Window Contact</span></td><td>Binary open/close. 150–300ft range. Battery 3–5yr.</td><td>Frame + door pairing. Top of door preferred.</td><td>Metal doors without spacer kit.</td><td>Front door arrival, slider entry, garage-to-home door</td><td><strong style="color:var(--green)">G:</strong> 3 main doors <strong style="color:var(--blue)">B:</strong> +all windows <strong style="color:var(--gold)">Best:</strong> Every entry</td></tr>
+          <tr><td><span class="stag st-g">Glass Break</span></td><td>Acoustic, 20–25ft radius. Hears impact + shatter frequency.</td><td>Ceiling or high wall, central to windows. One per room.</td><td>Next to TVs/speakers (false trigger).</td><td>Living room smash-and-grab, large window homes</td><td><strong style="color:var(--green)">G:</strong> Living room <strong style="color:var(--blue)">B:</strong> +bedroom level <strong style="color:var(--gold)">Best:</strong> All windowed areas</td></tr>
+          <tr><td><span class="stag st-w">Water Sensor</span></td><td>Probe/pad. Detects first 1/16" of water. Immediate alert.</td><td>Under dishwasher, sink, water heater, sump pit, washer pan.</td><td>Normal condensation areas (use dedicated sensor).</td><td>Vacation protection, "$11K claim prevention"</td><td><strong style="color:var(--green)">G:</strong> 1-2 key spots <strong style="color:var(--blue)">B:</strong> All wet zones <strong style="color:var(--gold)">Best:</strong> +auto shutoff</td></tr>
+          <tr><td><span class="stag st-s">Smoke (Monitored)</span></td><td>Photoelectric+ionization combo. 30ft open. 12ft spacing.</td><td>Every level, outside sleeping areas, 10ft from kitchen.</td><td>Within 10ft of stove, bathrooms, extreme temp zones.</td><td>"Asleep and can't hear it" — monitored calls 911 regardless</td><td><strong style="color:var(--green)">G:</strong> Each floor <strong style="color:var(--blue)">B:</strong> +outside bedrooms <strong style="color:var(--gold)">Best:</strong> Networked</td></tr>
+          <tr><td><span class="stag st-s">CO Detector</span></td><td>UL 2034 rated. 70ppm/60min, 150ppm/10min, 400ppm/4min.</td><td>Within 10ft of gas appliances, each floor, outside bedrooms.</td><td>Directly above stove, direct appliance exhaust line.</td><td>Gas stove/furnace homes — "odorless and invisible"</td><td><strong style="color:var(--green)">G:</strong> Near furnace <strong style="color:var(--blue)">B:</strong> Each level <strong style="color:var(--gold)">Best:</strong> Combo units throughout</td></tr>
+          <tr><td><span class="stag st-p">Panic Button</span></td><td>Wireless keyfob or wall-mount. Instant dispatch option.</td><td>Bedside table, front entry, keychain, elderly parent's room.</td><td>Don't place only one — redundancy matters.</td><td>Elderly parents, 3AM scenario, "one press = help coming"</td><td><strong style="color:var(--green)">G:</strong> 1 master bedside <strong style="color:var(--blue)">B:</strong> +keychain <strong style="color:var(--gold)">Best:</strong> Every bedroom+wearable</td></tr>
+          <tr><td><span class="stag st-k">Smart Lock</span></td><td>Z-Wave/WiFi, up to 250 codes, auto-lock, geo-fence, log.</td><td>Front door primary, back door optional, garage entry.</td><td>Doors without deadbolt prep. Metal doors: verify compatibility.</td><td>Kids' codes, caregiver management, "never wonder if locked"</td><td><strong style="color:var(--green)">G:</strong> Front only <strong style="color:var(--blue)">B:</strong> +auto-lock <strong style="color:var(--gold)">Best:</strong> +geo-fence+arrival rules</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- EMOTION MAP -->
+    <div class="dpage" id="dp-em">
+      <div class="emohero"><h2>❤️ The Emotional Trigger Map</h2><p>Every device sale is an emotional decision dressed as a logical one. This map connects the emotion → the room → the exact moment → the device → and the close line that lands it. Know which emotion you're in before you open your mouth.</p></div>
+      <div class="emogrid">
+        <div class="emocard"><div class="emoctop"><div class="emoico">👨‍👩‍👧</div><div class="emoname">Parental Instinct</div><div class="emotrig">Trigger: Kids are their entire world. Any scenario involving child safety bypasses every objection.</div></div><div class="emolist">
+          <div class="emoent"><div class="emoroom">FRONT DOOR</div><div class="emowhen">Kids home alone after school</div><div class="emoline">"You're in a meeting. They just walked in. You'll know before they even drop their backpack."</div><div class="emodrow"><span class="stag st-k">Smart Lock</span><span class="stag st-c">Doorbell</span></div></div>
+          <div class="emoent"><div class="emoroom">KIDS' ROOM WINDOW</div><div class="emowhen">Ground floor bedroom, child sleeping inside</div><div class="emoline">"This window opens — without a sensor, you're the only one watching it."</div><div class="emodrow"><span class="stag st-k">Window Sensor</span></div></div>
+          <div class="emoent"><div class="emoroom">ANY EXTERIOR DOOR</div><div class="emowhen">Toddler in the home, nighttime</div><div class="emoline">"That door chimes the second they touch it. You know before they open it."</div><div class="emodrow"><span class="stag st-k">Door Chime</span><span class="stag st-m">Hall Motion</span></div></div>
+        </div></div>
+        <div class="emocard"><div class="emoctop"><div class="emoico">😴</div><div class="emoname">Nighttime Vulnerability</div><div class="emotrig">Trigger: The 3AM fear is universal. "What was that noise?" is in every homeowner's memory.</div></div><div class="emolist">
+          <div class="emoent"><div class="emoroom">MASTER BEDROOM</div><div class="emowhen">Any night, unknown sound</div><div class="emoline">"Check your phone before you get up. Know before you move. One press if it's real."</div><div class="emodrow"><span class="stag st-m">Hall Motion</span><span class="stag st-c">Indoor Cam</span><span class="stag st-p">Panic</span></div></div>
+          <div class="emoent"><div class="emoroom">SLEEPING AREAS</div><div class="emowhen">Gas appliance, sleeping family</div><div class="emoline">"CO is odorless. Monitored means we call for help even if you can't."</div><div class="emodrow"><span class="stag st-s">Monitored CO</span></div></div>
+        </div></div>
+        <div class="emocard"><div class="emoctop"><div class="emoico">💰</div><div class="emoname">Financial Protection</div><div class="emotrig">Trigger: ROI thinking. Damage prevention vs. repair cost. Logic brain.</div></div><div class="emolist">
+          <div class="emoent"><div class="emoroom">KITCHEN / BASEMENT</div><div class="emowhen">Appliances, sump pump, vacation risk</div><div class="emoline">"Average water damage claim: $11,000. This sensor costs less than dinner."</div><div class="emodrow"><span class="stag st-w">Water Sensor</span><span class="stag st-w">Sump Monitor</span></div></div>
+          <div class="emoent"><div class="emoroom">HOME OFFICE</div><div class="emowhen">WFH setup, equipment theft</div><div class="emoline">"Insurance claim with footage is a formality. Without it, it's a fight."</div><div class="emodrow"><span class="stag st-c">Indoor Cam</span></div></div>
+        </div></div>
+        <div class="emocard"><div class="emoctop"><div class="emoico">😤</div><div class="emoname">Control & Certainty</div><div class="emotrig">Trigger: The "did I?" anxiety — garage, lock, alarm. These people need confirmation.</div></div><div class="emolist">
+          <div class="emoent"><div class="emoroom">GARAGE</div><div class="emowhen">Every morning commute</div><div class="emoline">"You'll never drive back to check. Open the app. Close it. Done. From wherever you are."</div><div class="emodrow"><span class="stag st-k">Garage Controller</span></div></div>
+          <div class="emoent"><div class="emoroom">FRONT DOOR</div><div class="emowhen">Type-A, frequent traveler</div><div class="emoline">"You'll know the second it's armed, the second it's disarmed, and exactly who did it."</div><div class="emodrow"><span class="stag st-k">Smart Lock</span></div></div>
+        </div></div>
+        <div class="emocard"><div class="emoctop"><div class="emoico">👴</div><div class="emoname">Elder Care</div><div class="emotrig">Trigger: Guilt and worry about a parent alone. They can't always be there — this is the next best thing.</div></div><div class="emolist">
+          <div class="emoent"><div class="emoroom">PARENT'S BEDROOM</div><div class="emowhen">Elderly parent lives in or near home</div><div class="emoline">"One press and help is on the way. No dialing. No talking. Just one press."</div><div class="emodrow"><span class="stag st-p">Panic Pendant</span><span class="stag st-s">Monitored CO</span></div></div>
+          <div class="emoent"><div class="emoroom">FRONT DOOR</div><div class="emowhen">Caregiver has access</div><div class="emoline">"You'll know when caregiver arrived, when they left, and how long they stayed."</div><div class="emodrow"><span class="stag st-k">Smart Lock + Log</span></div></div>
+        </div></div>
+        <div class="emocard"><div class="emoctop"><div class="emoico">✈️</div><div class="emoname">Travel Anxiety</div><div class="emotrig">Trigger: "What's happening at home?" People on vacation should feel present, not haunted.</div></div><div class="emolist">
+          <div class="emoent"><div class="emoroom">WHOLE HOME</div><div class="emowhen">Frequent traveler, snowbird, long trips</div><div class="emoline">"You can check every camera in this house right now from any country in the world."</div><div class="emodrow"><span class="stag st-c">Full Camera System</span></div></div>
+          <div class="emoent"><div class="emoroom">BASEMENT / UTILITY</div><div class="emowhen">Pipes, freeze, water risk while away</div><div class="emoline">"We catch it before you even land."</div><div class="emodrow"><span class="stag st-w">Sump + Flood Sensors</span></div></div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- STORYBOARD -->
+    <div class="dpage" id="dp-sb">
+      <div class="dsec-t">Interactive Demo Scenarios</div>
+      <div class="dsec-s">Press ▶ PLAY on any demo. Watch the scenario animate step-by-step with live sensor triggers, phone alerts, and system responses. Use at the kitchen table or during the walkthrough.</div>
+
+      <style>
+        .demo-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(520px,1fr));gap:24px;margin-bottom:32px}
+        .demo-card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;overflow:hidden}
+        .demo-hdr{padding:14px 18px 12px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:12px}
+        .demo-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);padding:3px 9px;border-radius:4px;letter-spacing:1px;flex-shrink:0}
+        .demo-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--txt);flex:1}
+        .demo-tagline{font-size:12px;color:var(--muted);margin-top:2px}
+        /* SCENE — animated SVG area */
+        .demo-scene{position:relative;height:220px;background:#060810;border-bottom:1px solid var(--bdr);overflow:hidden}
+        .demo-scene canvas{position:absolute;inset:0;width:100%;height:100%}
+        .demo-overlay-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+        .demo-overlay-msg .dom-inner{background:rgba(8,11,18,.85);border:1px solid var(--bdr);border-radius:10px;padding:18px 24px;text-align:center;max-width:280px}
+        .dom-inner .dom-t{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--txt);margin-bottom:5px}
+        .dom-inner .dom-s{font-size:12px;color:var(--muted);line-height:1.6}
+        /* CONTROLS */
+        .demo-controls{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--bdr);background:var(--bg)}
+        .d-play-btn{display:flex;align-items:center;gap:7px;padding:8px 18px;background:linear-gradient(135deg,var(--gold2),var(--gold));border:none;border-radius:7px;color:#080b12;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;cursor:pointer;transition:opacity .18s;flex-shrink:0}
+        .d-play-btn:hover{opacity:.88}
+        .d-play-btn.playing{background:linear-gradient(135deg,#1a3050,#2a4a70);color:var(--blue)}
+        .d-reset-btn{padding:7px 14px;background:none;border:1px solid var(--bdr);border-radius:7px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.5px}
+        .d-reset-btn:hover{color:var(--txt);border-color:var(--muted)}
+        .d-prog-wrap{flex:1;display:flex;flex-direction:column;gap:4px}
+        .d-prog-bar{height:5px;background:var(--bdr);border-radius:3px;overflow:hidden}
+        .d-prog-fill{height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold));border-radius:3px;transition:width .4s ease;width:0%}
+        .d-step-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+        /* STEP LOG */
+        .demo-log{padding:12px 16px;min-height:140px;max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:7px}
+        .demo-log::-webkit-scrollbar{width:4px}
+        .demo-log::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+        .dlog-item{display:flex;gap:10px;align-items:flex-start;opacity:0;transform:translateY(6px);transition:opacity .35s ease,transform .35s ease}
+        .dlog-item.visible{opacity:1;transform:none}
+        .dlog-ts{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.15);padding:2px 7px;border-radius:3px;white-space:nowrap;margin-top:1px;flex-shrink:0}
+        .dlog-icon{font-size:15px;flex-shrink:0;margin-top:0px}
+        .dlog-txt{font-size:13px;color:var(--txt);line-height:1.5;flex:1}
+        .dlog-txt strong{color:var(--gold)}
+        .dlog-txt em{color:var(--green);font-style:normal}
+        .dlog-txt.red{color:var(--red)}
+        .dlog-txt.green{color:var(--green)}
+        .dlog-txt.blue{color:var(--blue)}
+        .dlog-txt.gold{color:var(--gold)}
+        .dlog-txt.purple{color:var(--purple)}
+        /* Phone notification pop */
+        @keyframes phoneIn{0%{opacity:0;transform:translateX(60px) scale(.9)}70%{transform:translateX(-4px) scale(1.02)}100%{opacity:1;transform:none}}
+        .phone-notif{position:absolute;top:14px;right:14px;background:#111;border-radius:12px;padding:10px 13px;width:190px;box-shadow:0 8px 32px rgba(0,0,0,.7);display:none;z-index:10}
+        .phone-notif.show{display:block;animation:phoneIn .5s ease forwards}
+        .pn-app{font-size:10px;color:#888;font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:4px}
+        .pn-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;font-family:'Barlow Condensed',sans-serif;font-size:15px;letter-spacing:.3px}
+        .pn-body{font-size:11px;color:#aaa;line-height:1.4}
+        /* Siren flash */
+        @keyframes sirenFlash{0%,100%{opacity:0}50%{opacity:.25}}
+        .siren-flash{position:absolute;inset:0;background:red;pointer-events:none;display:none}
+        .siren-flash.on{display:block;animation:sirenFlash .5s ease infinite}
+        @media(max-width:700px){.demo-wrap{grid-template-columns:1fr}}
+      </style>
+
+      <div class="demo-wrap">
+
+        <!-- ── DEMO 01: SMASH & GRAB ── -->
+        <div class="demo-card" id="d1">
+          <div class="demo-hdr">
+            <div class="demo-num">DEMO · 01</div>
+            <div><div class="demo-title">🏃 The Smash &amp; Grab</div><div class="demo-tagline">Living room window breach · 10am · Homeowner at work · 45-second response</div></div>
+          </div>
+          <div class="demo-scene" id="d1-scene">
+            <canvas id="d1-canvas"></canvas>
+            <div class="siren-flash" id="d1-siren"></div>
+            <div class="phone-notif" id="d1-phone">
+              <div class="pn-app">ALARM.COM ·  NOW</div>
+              <div class="pn-title">⚠️ INTRUSION ALERT</div>
+              <div class="pn-body">Glass break detected · Living Room<br>Siren active · Monitoring notified</div>
+            </div>
+            <div class="demo-overlay-msg" id="d1-idle">
+              <div class="dom-inner"><div class="dom-t">🏃 Smash &amp; Grab Scenario</div><div class="dom-s">Press Play to watch the full system response from glass break to police dispatch in real time.</div></div>
+            </div>
+          </div>
+          <div class="demo-controls">
+            <button class="d-play-btn" id="d1-play" onclick="demoPlay(1)">▶ &nbsp;PLAY</button>
+            <button class="d-reset-btn" onclick="demoReset(1)">↺ Reset</button>
+            <div class="d-prog-wrap">
+              <div class="d-step-lbl" id="d1-lbl">Ready — press Play</div>
+              <div class="d-prog-bar"><div class="d-prog-fill" id="d1-prog"></div></div>
+            </div>
+          </div>
+          <div class="demo-log" id="d1-log"></div>
+        </div>
+
+        <!-- ── DEMO 02: 3AM ── -->
+        <div class="demo-card" id="d2">
+          <div class="demo-hdr">
+            <div class="demo-num">DEMO · 02</div>
+            <div><div class="demo-title">😴 3AM — Something Moved</div><div class="demo-tagline">Hall motion · Night mode · Camera check from bed · Back asleep in 60 seconds</div></div>
+          </div>
+          <div class="demo-scene" id="d2-scene">
+            <canvas id="d2-canvas"></canvas>
+            <div class="phone-notif" id="d2-phone">
+              <div class="pn-app">ALARM.COM · 3:04 AM</div>
+              <div class="pn-title">🔴 Motion Detected</div>
+              <div class="pn-body">Hallway · Night mode alert<br>Tap to view live camera</div>
+            </div>
+            <div class="demo-overlay-msg" id="d2-idle">
+              <div class="dom-inner"><div class="dom-t">😴 3AM Scenario</div><div class="dom-s">Press Play to see how the system turns "what was that noise?" into 60 seconds and back to sleep.</div></div>
+            </div>
+          </div>
+          <div class="demo-controls">
+            <button class="d-play-btn" id="d2-play" onclick="demoPlay(2)">▶ &nbsp;PLAY</button>
+            <button class="d-reset-btn" onclick="demoReset(2)">↺ Reset</button>
+            <div class="d-prog-wrap">
+              <div class="d-step-lbl" id="d2-lbl">Ready — press Play</div>
+              <div class="d-prog-bar"><div class="d-prog-fill" id="d2-prog"></div></div>
+            </div>
+          </div>
+          <div class="demo-log" id="d2-log"></div>
+        </div>
+
+        <!-- ── DEMO 03: SILENT FLOOD ── -->
+        <div class="demo-card" id="d3">
+          <div class="demo-hdr">
+            <div class="demo-num">DEMO · 03</div>
+            <div><div class="demo-title">💧 The Silent Flood</div><div class="demo-tagline">Dishwasher leak · 2AM · Sensor catches it in 4 minutes · $11K claim prevented</div></div>
+          </div>
+          <div class="demo-scene" id="d3-scene">
+            <canvas id="d3-canvas"></canvas>
+            <div class="phone-notif" id="d3-phone">
+              <div class="pn-app">ALARM.COM · 2:16 AM</div>
+              <div class="pn-title">💧 WATER DETECTED</div>
+              <div class="pn-body">Kitchen floor sensor triggered<br>Tap to shut off main water valve</div>
+            </div>
+            <div class="demo-overlay-msg" id="d3-idle">
+              <div class="dom-inner"><div class="dom-t">💧 Silent Flood Scenario</div><div class="dom-s">Press Play to watch a $47 repair prevent an $11,000 insurance claim — in real time.</div></div>
+            </div>
+          </div>
+          <div class="demo-controls">
+            <button class="d-play-btn" id="d3-play" onclick="demoPlay(3)">▶ &nbsp;PLAY</button>
+            <button class="d-reset-btn" onclick="demoReset(3)">↺ Reset</button>
+            <div class="d-prog-wrap">
+              <div class="d-step-lbl" id="d3-lbl">Ready — press Play</div>
+              <div class="d-prog-bar"><div class="d-prog-fill" id="d3-prog"></div></div>
+            </div>
+          </div>
+          <div class="demo-log" id="d3-log"></div>
+        </div>
+
+        <!-- ── DEMO 04: KIDS HOME ── -->
+        <div class="demo-card" id="d4">
+          <div class="demo-hdr">
+            <div class="demo-num">DEMO · 04</div>
+            <div><div class="demo-title">🧒 "They're Home Safe"</div><div class="demo-tagline">Child arrival · Smart lock code · Doorbell clip · Mom in a meeting · Never breaks stride</div></div>
+          </div>
+          <div class="demo-scene" id="d4-scene">
+            <canvas id="d4-canvas"></canvas>
+            <div class="phone-notif" id="d4-phone">
+              <div class="pn-app">ALARM.COM · 3:18 PM</div>
+              <div class="pn-title">✅ Jake Arrived Home</div>
+              <div class="pn-body">Front door · Code used at 3:18pm<br>📷 Tap to see doorbell clip</div>
+            </div>
+            <div class="demo-overlay-msg" id="d4-idle">
+              <div class="dom-inner"><div class="dom-t">🧒 Child Arrival Scenario</div><div class="dom-s">Press Play. This is the one that closes parents. Every time.</div></div>
+            </div>
+          </div>
+          <div class="demo-controls">
+            <button class="d-play-btn" id="d4-play" onclick="demoPlay(4)">▶ &nbsp;PLAY</button>
+            <button class="d-reset-btn" onclick="demoReset(4)">↺ Reset</button>
+            <div class="d-prog-wrap">
+              <div class="d-step-lbl" id="d4-lbl">Ready — press Play</div>
+              <div class="d-prog-bar"><div class="d-prog-fill" id="d4-prog"></div></div>
+            </div>
+          </div>
+          <div class="demo-log" id="d4-log"></div>
+        </div>
+
+      </div><!-- /demo-wrap -->
+    </div>
+
+    <script>
+    // ── DEMO ENGINE ─────────────────────────────────────────────────
+    var _dTimers = {};
+    var _dAnimFrame = {};
+
+    // Scenario definitions: each step = [delay_ms, timestamp, icon, text, cssClass, actions[]]
+    // actions: phone|siren|canvas_fn
+    var DEMOS = {
+      1: {
+        title:'Smash & Grab',
+        bg:'radial-gradient(circle at 30% 60%,#1a2a10,#060810)',
+        steps:[
+          [0,    '10:02 AM','🏠','Homeowner leaves for work. Living room window unsensed. Home in "Away" mode.','','[]'],
+          [2200, '10:14 AM','💥','GLASS BREAK — Intruder strikes living room window. Impact + shatter frequency detected.','red','["canvas:shatter","siren:on"]'],
+          [4000, '10:14 AM','🚨','Panel siren activates at 104dB. Alarm.com push alert fires to homeowner\'s phone.','red','["phone:1"]'],
+          [5800, '10:14 AM','🔴','Interior motion detector triggers — intruder has entered the room. Second layer fires.','red','["canvas:motion"]'],
+          [8000, '10:14 AM','📞','Monitoring center calls homeowner. No answer — <strong>police dispatch initiated automatically.</strong>','gold','[]'],
+          [10500,'10:14 AM','📹','Indoor camera records entry. Video clip cloud-saved before intruder reaches the panel.','blue','["canvas:cam"]'],
+          [13000,'10:18 AM','🚔','Police arrive. Video clip ready. <em>Claim filed with footage same day.</em>','green','["siren:off","canvas:police"]'],
+          [15500,'OUTCOME','🏆','<strong>System response: 45 seconds.</strong> Without sensors: no alarm, no dispatch, nothing. That\'s the difference.','gold','[]']
+        ]
+      },
+      2: {
+        title:'3AM Scenario',
+        bg:'radial-gradient(circle at 50% 50%,#0a0a1a,#040408)',
+        steps:[
+          [0,    '3:04 AM','🌙','House dark. Family asleep. Night mode active — motion alerts fire silently to phone only.','','[]'],
+          [2200, '3:04 AM','🔴','Hall motion detector triggers. Something moved. <strong>Silent alert fires to phone.</strong>','red','["canvas:motion","phone:2"]'],
+          [4200, '3:04 AM','📱','Homeowner rolls over, opens Alarm.com. <em>Live camera feed loads in 2 seconds.</em>','blue','["canvas:phone_check"]'],
+          [6500, '3:04 AM','🐕','Live view: hallway clear. Motion source identified — <em>it\'s the dog.</em> No threat.','green','["canvas:dog"]'],
+          [8500, '3:05 AM','✅','Homeowner dismisses alert. No dispatch needed. <em>Back asleep.</em> Total time: 60 seconds.','green','[]'],
+          [11000,'WITHOUT','❌','<strong>Without cameras:</strong> laid awake for an hour. Heart pounding. Grabbed a weapon. Searched every room.','red','[]'],
+          [13500,'WITH SYSTEM','✅','<strong>With cameras:</strong> 60 seconds on the phone. Eyes closed. That\'s worth every penny.','gold','[]']
+        ]
+      },
+      3: {
+        title:'Silent Flood',
+        bg:'radial-gradient(circle at 50% 80%,#0a1520,#060810)',
+        steps:[
+          [0,    '2:12 AM','🏠','Family asleep. Dishwasher supply line fitting begins slow drip under cabinet. Completely silent.','','["canvas:drip_start"]'],
+          [2500, '2:12 AM','💧','Water accumulates under cabinet. Subfloor begins absorbing moisture. No alarm. No alert.','','["canvas:water_spread"]'],
+          [5000, '2:16 AM','⚡','Water sensor detects <strong>1/16" of moisture</strong> at probe contacts. <em>Alert fires instantly.</em>','gold','["phone:3","canvas:sensor_alert"]'],
+          [7000, '2:16 AM','📱','Homeowner wakes to alert. Opens Alarm.com. <strong>Water detected — Kitchen.</strong> Taps remote shutoff.','blue','["canvas:phone_water"]'],
+          [9200, '2:17 AM','🚿','Main water shutoff valve closes remotely via Alarm.com. <em>Water flow stops.</em>','green','["canvas:shutoff"]'],
+          [11500,'7:00 AM','🔧','Plumber called. Subfloor dry. Fitting replaced for $47. <em>Total damage: zero.</em>','green','[]'],
+          [14000,'OUTCOME','💰','<strong>Without sensor:</strong> 5+ hrs of water. Subfloor saturated. Mold risk at 48hrs. Avg claim: <strong>$11,000.</strong>','red','[]'],
+          [16500,'CLOSE','🏆','<em>"A $30 sensor caught a $11,000 problem at 2am while everyone slept. That\'s the job."</em>','gold','[]']
+        ]
+      },
+      4: {
+        title:"They're Home Safe",
+        bg:'radial-gradient(circle at 60% 40%,#1a1a2a,#060810)',
+        steps:[
+          [0,    '3:15 PM','💼','Mom in a budget meeting. Phone face-down on the table. Kids are supposed to be home by 3:30.','','[]'],
+          [2000, '3:18 PM','🔑','Jake enters his unique code at the front door. <strong>Smart lock logs: "Jake · 3:18pm"</strong>','','["canvas:lock"]'],
+          [3800, '3:18 PM','📲','Alarm.com child arrival rule fires. <strong>Push notification to Mom\'s phone: "Jake arrived home."</strong>','gold','["phone:4","canvas:notif"]'],
+          [5800, '3:18 PM','📷','Doorbell camera clips Jake\'s face walking through the door. <em>Thumbnail in the notification.</em>','blue','["canvas:doorbell"]'],
+          [8000, '3:19 PM','😊','Mom glances at phone under the table. <strong>Sees his face. Smiles.</strong> Eyes back on the presentation.','green','["canvas:mom_smile"]'],
+          [10500,'3:19 PM','✅','Jake doesn\'t know she checked. She didn\'t interrupt the meeting. <em>Nobody called anyone.</em>','green','[]'],
+          [13000,'CLOSE','🏆','<strong>"That\'s the product."</strong> Not the hardware. That moment. That breath she just took. <em>That\'s what we\'re selling.</em>','gold','[]']
+        ]
+      }
+    };
+
+    function demoReset(n) {
+      var d = DEMOS[n];
+      if(!d) return;
+      // Clear timers
+      if(_dTimers[n]) { _dTimers[n].forEach(function(t){clearTimeout(t);}); _dTimers[n]=[]; }
+      if(_dAnimFrame[n]) { cancelAnimationFrame(_dAnimFrame[n]); _dAnimFrame[n]=null; }
+      // Reset UI
+      var btn = document.getElementById('d'+n+'-play');
+      btn.innerHTML='▶ &nbsp;PLAY'; btn.classList.remove('playing');
+      document.getElementById('d'+n+'-prog').style.width='0%';
+      document.getElementById('d'+n+'-lbl').textContent='Ready — press Play';
+      document.getElementById('d'+n+'-log').innerHTML='';
+      var phone = document.getElementById('d'+n+'-phone');
+      if(phone) phone.classList.remove('show');
+      var siren = document.getElementById('d'+n+'-siren');
+      if(siren) siren.classList.remove('on');
+      var idle = document.getElementById('d'+n+'-idle');
+      if(idle) idle.style.display='flex';
+      // Clear canvas
+      var cv = document.getElementById('d'+n+'-canvas');
+      if(cv) { var ctx=cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height); }
+      btn._playing = false;
+    }
+
+    function demoPlay(n) {
+      var btn = document.getElementById('d'+n+'-play');
+      if(btn._playing) { demoReset(n); return; }
+      btn._playing = true;
+      btn.innerHTML='⏹ &nbsp;STOP'; btn.classList.add('playing');
+      var idle = document.getElementById('d'+n+'-idle');
+      if(idle) idle.style.display='none';
+      var d = DEMOS[n];
+      var total = d.steps[d.steps.length-1][0] + 2000;
+      _dTimers[n] = [];
+      // Setup canvas
+      var cv = document.getElementById('d'+n+'-canvas');
+      var scene = document.getElementById('d'+n+'-scene');
+      cv.width = scene.offsetWidth || 520;
+      cv.height = scene.offsetHeight || 220;
+      drawBaseScene(n, cv);
+      // Schedule steps
+      d.steps.forEach(function(step, si) {
+        var t = setTimeout(function() {
+          if(!btn._playing) return;
+          var pct = Math.round(((si+1)/d.steps.length)*100);
+          document.getElementById('d'+n+'-prog').style.width=pct+'%';
+          document.getElementById('d'+n+'-lbl').textContent='Step '+(si+1)+' of '+d.steps.length+' · '+step[1];
+          addLog(n, step[1], step[2], step[3], step[4]);
+          var actions = step[5] ? JSON.parse(step[5]) : [];
+          actions.forEach(function(a){
+            if(a==='phone:'+n) { var p=document.getElementById('d'+n+'-phone'); if(p){p.classList.remove('show');void p.offsetWidth;p.classList.add('show');} }
+            if(a==='siren:on')  { var s=document.getElementById('d'+n+'-siren'); if(s) s.classList.add('on'); }
+            if(a==='siren:off') { var s=document.getElementById('d'+n+'-siren'); if(s) s.classList.remove('on'); }
+            if(a.indexOf('canvas:')===0) { doCanvasAction(n, a.replace('canvas:',''), cv); }
+          });
+          if(si===d.steps.length-1) {
+            setTimeout(function(){
+              btn.innerHTML='✅ &nbsp;COMPLETE'; btn.classList.remove('playing');
+              btn._playing=false;
+              document.getElementById('d'+n+'-lbl').textContent='Demo complete — press Reset to replay';
+            }, 800);
+          }
+        }, step[0]);
+        _dTimers[n].push(t);
+      });
+    }
+
+    function addLog(n, ts, icon, txt, cls) {
+      var log = document.getElementById('d'+n+'-log');
+      var item = document.createElement('div');
+      item.className='dlog-item';
+      var clsVal = cls ? ' '+cls : '';
+      item.innerHTML = '<div class="dlog-ts">'+ts+'</div><div class="dlog-icon">'+icon+'</div><div class="dlog-txt'+clsVal+'">'+txt+'</div>';
+      log.appendChild(item);
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ item.classList.add('visible'); }); });
+      log.scrollTop = log.scrollHeight;
+    }
+
+    // Canvas scenes
+    function drawBaseScene(n, cv) {
+      var ctx = cv.getContext('2d');
+      var w = cv.width, h = cv.height;
+      ctx.clearRect(0,0,w,h);
+      if(n===1) drawScene1(ctx,w,h,0);
+      if(n===2) drawScene2(ctx,w,h,0);
+      if(n===3) drawScene3(ctx,w,h,0);
+      if(n===4) drawScene4(ctx,w,h,0);
+    }
+
+    function doCanvasAction(n, action, cv) {
+      var ctx = cv.getContext('2d'), w=cv.width, h=cv.height;
+      if(n===1){
+        if(action==='shatter'){
+          // Flash crack on window
+          ctx.save();
+          ctx.strokeStyle='rgba(255,200,50,0.9)'; ctx.lineWidth=2;
+          var wx=w*0.18, wy=h*0.28;
+          for(var i=0;i<8;i++){
+            var a=Math.random()*Math.PI*2, len=10+Math.random()*20;
+            ctx.beginPath(); ctx.moveTo(wx+w*0.08,wy+h*0.1);
+            ctx.lineTo(wx+w*0.08+Math.cos(a)*len, wy+h*0.1+Math.sin(a)*len);
+            ctx.stroke();
+          }
+          ctx.fillStyle='rgba(255,230,100,0.15)';
+          ctx.fillRect(wx,wy,w*0.16,h*0.22);
+          ctx.restore();
+          // Glass break sensor flash
+          animatePulse(ctx, w*0.45, h*0.25, '#a78bfa', 3);
+        }
+        if(action==='motion'){
+          animatePulse(ctx, w*0.55, h*0.5, '#f97316', 3);
+        }
+        if(action==='cam'){
+          ctx.save(); ctx.strokeStyle='#22d3ee'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+          ctx.beginPath(); ctx.moveTo(w*0.65,h*0.2); ctx.lineTo(w*0.85,h*0.1); ctx.lineTo(w*0.85,h*0.4); ctx.closePath(); ctx.stroke();
+          ctx.restore();
+          animatePulse(ctx, w*0.65, h*0.2, '#22d3ee', 2);
+        }
+        if(action==='police'){
+          ctx.save(); ctx.font='bold 28px Arial'; ctx.fillText('🚔', w*0.72, h*0.85); ctx.restore();
+        }
+      }
+      if(n===2){
+        if(action==='motion'){ animatePulse(ctx, w*0.5, h*0.4, '#f97316', 3); }
+        if(action==='phone_check'){
+          // Draw phone glow in bed area
+          ctx.save(); ctx.fillStyle='rgba(58,141,222,0.15)'; ctx.fillRect(w*0.6,h*0.55,w*0.28,h*0.35); ctx.restore();
+        }
+        if(action==='dog'){
+          ctx.save(); ctx.font='32px Arial'; ctx.fillText('🐕', w*0.48, h*0.52); ctx.restore();
+          // Green checkmark
+          ctx.save(); ctx.strokeStyle='#2ecb6a'; ctx.lineWidth=3;
+          ctx.beginPath(); ctx.arc(w*0.5,h*0.55,24,0,Math.PI*2); ctx.stroke();
+          ctx.restore();
+        }
+      }
+      if(n===3){
+        if(action==='drip_start'){
+          animateWaterDrip(ctx, w*0.25, h*0.55, 1);
+        }
+        if(action==='water_spread'){
+          animateWaterDrip(ctx, w*0.25, h*0.55, 3);
+          ctx.save(); ctx.fillStyle='rgba(56,189,248,0.2)';
+          ctx.beginPath(); ctx.ellipse(w*0.25,h*0.72,w*0.12,h*0.06,0,0,Math.PI*2); ctx.fill(); ctx.restore();
+        }
+        if(action==='sensor_alert'){ animatePulse(ctx, w*0.25, h*0.78, '#38bdf8', 4); }
+        if(action==='shutoff'){
+          ctx.save(); ctx.fillStyle='rgba(46,203,106,0.15)'; ctx.fillRect(w*0.1,h*0.3,w*0.3,h*0.55); ctx.restore();
+          ctx.save(); ctx.font='24px Arial'; ctx.fillText('✅', w*0.35, h*0.78); ctx.restore();
+        }
+      }
+      if(n===4){
+        if(action==='lock'){
+          animatePulse(ctx, w*0.22, h*0.45, '#4ade80', 3);
+          ctx.save(); ctx.font='20px Arial'; ctx.fillText('🔓', w*0.18, h*0.5); ctx.restore();
+        }
+        if(action==='notif'){ animatePulse(ctx, w*0.5, h*0.5, '#f5a623', 3); }
+        if(action==='doorbell'){
+          animatePulse(ctx, w*0.22, h*0.3, '#22d3ee', 3);
+          ctx.save(); ctx.font='18px Arial'; ctx.fillText('📷', w*0.18, h*0.33); ctx.restore();
+        }
+        if(action==='mom_smile'){
+          ctx.save(); ctx.font='28px Arial'; ctx.fillText('😊', w*0.72, h*0.55); ctx.restore();
+          ctx.save(); ctx.fillStyle='rgba(46,203,106,0.15)'; ctx.fillRect(w*0.6,h*0.35,w*0.3,h*0.45); ctx.restore();
+        }
+      }
+    }
+
+    function animatePulse(ctx, x, y, color, count) {
+      var step=0, maxR=38;
+      function pulse(){
+        if(step>=count*2) return;
+        var r = (step%2===0) ? 8 : maxR;
+        var alpha = (step%2===0) ? 0.9 : 0;
+        ctx.save();
+        ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+        ctx.strokeStyle=color; ctx.lineWidth=2; ctx.globalAlpha=alpha+(step%2===0?0:0.5);
+        ctx.stroke(); ctx.restore();
+        step++;
+        setTimeout(pulse, 180);
+      }
+      // Fill dot
+      ctx.save(); ctx.beginPath(); ctx.arc(x,y,8,0,Math.PI*2);
+      ctx.fillStyle=color; ctx.globalAlpha=0.9; ctx.fill(); ctx.restore();
+      setTimeout(pulse, 50);
+    }
+
+    function animateWaterDrip(ctx, x, y, drops) {
+      for(var i=0;i<drops;i++){
+        ctx.save();
+        ctx.fillStyle='rgba(56,189,248,0.7)';
+        ctx.beginPath();
+        ctx.ellipse(x+(i*12-drops*6), y+Math.random()*15, 4, 7, 0, 0, Math.PI*2);
+        ctx.fill(); ctx.restore();
+      }
+    }
+
+    // Base scene drawings
+    function drawScene1(ctx, w, h) {
+      // Living room: floor, wall, window, couch
+      ctx.fillStyle='#0d1424'; ctx.fillRect(0,0,w,h);
+      // floor
+      ctx.fillStyle='#161e30'; ctx.fillRect(0,h*0.6,w,h*0.4);
+      ctx.strokeStyle='#1e2a40'; ctx.lineWidth=1;
+      for(var i=0;i<6;i++){ctx.beginPath();ctx.moveTo(0,h*0.6+i*(h*0.4/5));ctx.lineTo(w,h*0.6+i*(h*0.4/5));ctx.stroke();}
+      // wall window
+      ctx.fillStyle='#0d1830'; ctx.fillRect(w*0.08,h*0.15,w*0.22,h*0.35);
+      ctx.strokeStyle='#2a3550'; ctx.lineWidth=2; ctx.strokeRect(w*0.08,h*0.15,w*0.22,h*0.35);
+      ctx.strokeStyle='#1a2840'; ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(w*0.19,h*0.15);ctx.lineTo(w*0.19,h*0.5);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(w*0.08,h*0.33);ctx.lineTo(w*0.3,h*0.33);ctx.stroke();
+      // glass break sensor
+      ctx.fillStyle='rgba(167,139,250,0.6)'; ctx.beginPath(); ctx.arc(w*0.45,h*0.25,6,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(167,139,250,0.15)'; ctx.beginPath(); ctx.arc(w*0.45,h*0.25,22,0,Math.PI*2); ctx.fill();
+      // couch
+      ctx.fillStyle='#1e2a40'; ctx.fillRect(w*0.35,h*0.55,w*0.45,h*0.18);
+      ctx.fillStyle='#253345'; ctx.fillRect(w*0.35,h*0.48,w*0.05,h*0.25); ctx.fillRect(w*0.75,h*0.48,w*0.05,h*0.25);
+      // TV
+      ctx.fillStyle='#0a0e18'; ctx.fillRect(w*0.6,h*0.2,w*0.22,h*0.24); ctx.strokeStyle='#2a3550'; ctx.lineWidth=1.5; ctx.strokeRect(w*0.6,h*0.2,w*0.22,h*0.24);
+      // motion sensor
+      ctx.fillStyle='rgba(249,115,22,0.6)'; ctx.beginPath(); ctx.arc(w*0.55,h*0.18,5,0,Math.PI*2); ctx.fill();
+      // labels
+      ctx.fillStyle='#3a4a60'; ctx.font='10px JetBrains Mono'; ctx.fillText('GLASS BREAK',w*0.46,h*0.22);
+      ctx.fillText('MOTION',w*0.56,h*0.15);
+      ctx.fillText('LIVING ROOM',w*0.04,h*0.12);
+    }
+
+    function drawScene2(ctx, w, h) {
+      // Dark bedroom scene
+      ctx.fillStyle='#04060e'; ctx.fillRect(0,0,w,h);
+      // stars
+      ctx.fillStyle='rgba(255,255,255,0.3)';
+      [[w*0.1,h*0.08],[w*0.35,h*0.04],[w*0.6,h*0.1],[w*0.8,h*0.06],[w*0.9,h*0.14]].forEach(function(s){
+        ctx.beginPath(); ctx.arc(s[0],s[1],1.5,0,Math.PI*2); ctx.fill();
+      });
+      // window moon
+      ctx.fillStyle='#0d1424'; ctx.fillRect(w*0.04,h*0.08,w*0.18,h*0.3);
+      ctx.strokeStyle='#1e2a40'; ctx.lineWidth=1.5; ctx.strokeRect(w*0.04,h*0.08,w*0.18,h*0.3);
+      ctx.fillStyle='rgba(200,210,255,0.12)'; ctx.beginPath(); ctx.arc(w*0.13,h*0.12,h*0.08,0,Math.PI*2); ctx.fill();
+      // bed
+      ctx.fillStyle='#141c2e'; ctx.fillRect(w*0.55,h*0.45,w*0.4,h*0.48);
+      ctx.fillStyle='#1a2438'; ctx.fillRect(w*0.55,h*0.45,w*0.4,h*0.14);
+      ctx.fillStyle='rgba(58,141,222,0.15)'; ctx.fillRect(w*0.62,h*0.52,w*0.14,h*0.2);
+      ctx.strokeStyle='#2a3550'; ctx.lineWidth=1; ctx.strokeRect(w*0.55,h*0.45,w*0.4,h*0.48);
+      // hallway outline
+      ctx.strokeStyle='#1a2438'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+      ctx.strokeRect(w*0.25,h*0.25,w*0.22,h*0.6); ctx.setLineDash([]);
+      ctx.fillStyle='#1a2438'; ctx.font='9px JetBrains Mono'; ctx.fillText('HALLWAY',w*0.27,h*0.23);
+      // motion sensor in hallway
+      ctx.fillStyle='rgba(249,115,22,0.5)'; ctx.beginPath(); ctx.arc(w*0.36,h*0.3,5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(249,115,22,0.08)'; ctx.beginPath(); ctx.arc(w*0.36,h*0.3,30,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#3a4a60'; ctx.font='9px JetBrains Mono'; ctx.fillText('MOTION',w*0.37,h*0.28);
+      ctx.fillText('BEDROOM',w*0.57,h*0.43);
+      ctx.fillStyle='rgba(46,203,106,0.2)'; ctx.beginPath(); ctx.arc(w*0.7,h*0.6,4,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#3a4a60'; ctx.font='8px JetBrains Mono'; ctx.fillText('PHONE',w*0.67,h*0.64);
+    }
+
+    function drawScene3(ctx, w, h) {
+      // Kitchen scene
+      ctx.fillStyle='#08101a'; ctx.fillRect(0,0,w,h);
+      // counter top
+      ctx.fillStyle='#141e2e'; ctx.fillRect(w*0.04,h*0.2,w*0.5,h*0.45);
+      ctx.strokeStyle='#2a3550'; ctx.lineWidth=1.5; ctx.strokeRect(w*0.04,h*0.2,w*0.5,h*0.45);
+      // dishwasher
+      ctx.fillStyle='#1a2438'; ctx.fillRect(w*0.08,h*0.24,w*0.18,h*0.38);
+      ctx.strokeStyle='#2a3550'; ctx.lineWidth=1; ctx.strokeRect(w*0.08,h*0.24,w*0.18,h*0.38);
+      ctx.fillStyle='#0f1824'; ctx.fillRect(w*0.09,h*0.28,w*0.16,h*0.06);
+      // supply line
+      ctx.strokeStyle='rgba(56,189,248,0.3)'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(w*0.12,h*0.62); ctx.lineTo(w*0.12,h*0.78); ctx.stroke();
+      // water sensor on floor
+      ctx.fillStyle='rgba(56,189,248,0.6)'; ctx.beginPath(); ctx.arc(w*0.25,h*0.78,6,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(56,189,248,0.1)'; ctx.beginPath(); ctx.arc(w*0.25,h*0.78,20,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#3a4a60'; ctx.font='9px JetBrains Mono'; ctx.fillText('WATER SENSOR',w*0.28,h*0.8);
+      // sink
+      ctx.fillStyle='#0d1820'; ctx.fillRect(w*0.3,h*0.26,w*0.18,h*0.12); ctx.strokeStyle='#2a3550'; ctx.strokeRect(w*0.3,h*0.26,w*0.18,h*0.12);
+      // clock on wall
+      ctx.strokeStyle='#2a3550'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(w*0.85,h*0.18,h*0.1,0,Math.PI*2); ctx.stroke();
+      ctx.fillStyle='#3a4a60'; ctx.font='10px JetBrains Mono'; ctx.fillText('2:12',w*0.81,h*0.2);
+      ctx.fillText('AM',w*0.83,h*0.26);
+      // phone sleeping
+      ctx.fillStyle='#0a0e18'; ctx.fillRect(w*0.7,h*0.55,w*0.14,h*0.25); ctx.strokeStyle='#1e2a40'; ctx.strokeRect(w*0.7,h*0.55,w*0.14,h*0.25);
+      ctx.fillStyle='#3a4a60'; ctx.font='9px JetBrains Mono'; ctx.fillText('PHONE',w*0.71,h*0.85);
+      ctx.fillText('KITCHEN',w*0.06,h*0.17);
+    }
+
+    function drawScene4(ctx, w, h) {
+      // Split scene: front door left, office/meeting right
+      ctx.fillStyle='#080c14'; ctx.fillRect(0,0,w,h);
+      // Divider
+      ctx.strokeStyle='#1e2a40'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(w*0.5,0); ctx.lineTo(w*0.5,h); ctx.stroke(); ctx.setLineDash([]);
+      // LEFT: Front door
+      ctx.fillStyle='#141e2e'; ctx.fillRect(w*0.06,h*0.2,w*0.2,h*0.55);
+      ctx.strokeStyle='#2a3550'; ctx.lineWidth=2; ctx.strokeRect(w*0.06,h*0.2,w*0.2,h*0.55);
+      ctx.fillStyle='#1a2838'; ctx.beginPath(); ctx.arc(w*0.24,h*0.47,3,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='#2a3550'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(w*0.06,h*0.2); ctx.lineTo(w*0.02,h*0.16); ctx.stroke();
+      // Smart lock
+      ctx.fillStyle='rgba(74,222,128,0.6)'; ctx.fillRect(w*0.27,h*0.42,w*0.04,h*0.08);
+      ctx.strokeStyle='#4ade80'; ctx.lineWidth=1.5; ctx.strokeRect(w*0.27,h*0.42,w*0.04,h*0.08);
+      // Doorbell camera
+      ctx.fillStyle='rgba(34,211,238,0.6)'; ctx.beginPath(); ctx.arc(w*0.28,h*0.28,5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#3a4a60'; ctx.font='8px JetBrains Mono';
+      ctx.fillText('FRONT DOOR',w*0.06,h*0.17);
+      ctx.fillText('SMART LOCK',w*0.28,h*0.54);
+      ctx.fillText('DOORBELL',w*0.29,h*0.27);
+      // kid figure walking in
+      ctx.fillStyle='rgba(74,222,128,0.3)'; ctx.beginPath(); ctx.arc(w*0.14,h*0.58,8,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(74,222,128,0.6)'; ctx.font='20px Arial'; ctx.fillText('🧒',w*0.08,h*0.65);
+      // RIGHT: Meeting room
+      ctx.fillStyle='#0d1424'; ctx.fillRect(w*0.53,h*0.1,w*0.44,h*0.75);
+      ctx.strokeStyle='#1e2a40'; ctx.lineWidth=1; ctx.strokeRect(w*0.53,h*0.1,w*0.44,h*0.75);
+      // table
+      ctx.fillStyle='#141e2e'; ctx.fillRect(w*0.55,h*0.35,w*0.4,h*0.25);
+      // people
+      ['#2a3a50','#253045','#1e2a40'].forEach(function(c,i){
+        ctx.fillStyle=c; ctx.beginPath(); ctx.arc(w*(0.6+i*0.1),h*0.32,8,0,Math.PI*2); ctx.fill();
+      });
+      // mom highlighted
+      ctx.strokeStyle='rgba(245,166,35,0.4)'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(w*0.7,h*0.32,10,0,Math.PI*2); ctx.stroke();
+      // phone on table
+      ctx.fillStyle='#080c14'; ctx.fillRect(w*0.68,h*0.38,w*0.08,h*0.14); ctx.strokeStyle='#1e2a40'; ctx.strokeRect(w*0.68,h*0.38,w*0.08,h*0.14);
+      ctx.fillStyle='#3a4a60'; ctx.font='8px JetBrains Mono'; ctx.fillText('MEETING',w*0.57,h*0.09);
+      ctx.fillText('MOM 📱',w*0.66,h*0.55);
+    }
+    </script>
+
+    <!-- ARCHITECTURE -->
+    <div class="dpage" id="dp-ar">
+      <div class="dsec-t">System Architecture & Coverage Schema</div>
+      <div class="dsec-s">How all components connect through Alarm.com — panel, sensors, cameras, smart home, monitoring center, and member app.</div>
+      <div class="archrow">
+        <div class="archcard">
+          <div class="archhdr"><span>Alarm.com System Architecture</span><span style="font-size:10px;color:var(--muted)">CONNECTIVITY MAP</span></div>
+          <div class="archbody">
+            <svg viewBox="0 0 480 330" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <rect width="480" height="330" fill="#070a10"/>
+              <rect x="190" y="126" width="100" height="66" rx="5" fill="#151c2e" stroke="#f5a623" stroke-width="2"/>
+              <text x="240" y="152" text-anchor="middle" font-family="Barlow Condensed" font-size="11" fill="#f5a623" font-weight="700">SECURITY</text>
+              <text x="240" y="165" text-anchor="middle" font-family="Barlow Condensed" font-size="11" fill="#f5a623" font-weight="700">PANEL</text>
+              <text x="240" y="180" text-anchor="middle" font-size="8" fill="#6b7a99" font-family="JetBrains Mono">Alarm.com</text>
+              <rect x="200" y="18" width="80" height="38" rx="4" fill="#0f1420" stroke="#3a8dde" stroke-width="1.5"/>
+              <text x="240" y="35" text-anchor="middle" font-size="10" fill="#3a8dde" font-family="Barlow Condensed" font-weight="700">CELLULAR</text>
+              <text x="240" y="48" text-anchor="middle" font-size="8" fill="#6b7a99">4G LTE Backup</text>
+              <line x1="240" y1="56" x2="240" y2="126" stroke="#3a8dde" stroke-width="1.5" stroke-dasharray="4,2"/>
+              <rect x="355" y="18" width="116" height="48" rx="4" fill="#0f1420" stroke="#2ecb6a" stroke-width="1.5"/>
+              <text x="413" y="38" text-anchor="middle" font-size="10" fill="#2ecb6a" font-family="Barlow Condensed" font-weight="700">MONITORING</text>
+              <text x="413" y="52" text-anchor="middle" font-size="10" fill="#2ecb6a" font-family="Barlow Condensed" font-weight="700">CENTER</text>
+              <line x1="355" y1="42" x2="290" y2="150" stroke="#2ecb6a" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <rect x="360" y="126" width="110" height="48" rx="4" fill="#0f1420" stroke="#c084fc" stroke-width="1.5"/>
+              <text x="415" y="148" text-anchor="middle" font-size="10" fill="#c084fc" font-family="Barlow Condensed" font-weight="700">MEMBER APP</text>
+              <text x="415" y="162" text-anchor="middle" font-size="8" fill="#6b7a99">Alarm.com iOS/Android</text>
+              <line x1="360" y1="155" x2="290" y2="160" stroke="#c084fc" stroke-width="1.5" stroke-dasharray="4,2"/>
+              <g><rect x="8" y="36" width="88" height="28" rx="3" fill="#0f1420" stroke="var(--motion)" stroke-width="1"/><text x="52" y="54" text-anchor="middle" font-size="9" fill="var(--motion)" font-family="Barlow Condensed" font-weight="700">PIR MOTION</text><line x1="96" y1="50" x2="190" y2="150" stroke="var(--motion)" stroke-width="1" opacity=".5"/></g>
+              <g><rect x="8" y="74" width="88" height="28" rx="3" fill="#0f1420" stroke="var(--contact)" stroke-width="1"/><text x="52" y="92" text-anchor="middle" font-size="9" fill="var(--contact)" font-family="Barlow Condensed" font-weight="700">DOOR/WINDOW</text><line x1="96" y1="88" x2="190" y2="154" stroke="var(--contact)" stroke-width="1" opacity=".5"/></g>
+              <g><rect x="8" y="112" width="88" height="28" rx="3" fill="#0f1420" stroke="var(--glass)" stroke-width="1"/><text x="52" y="130" text-anchor="middle" font-size="9" fill="var(--glass)" font-family="Barlow Condensed" font-weight="700">GLASS BREAK</text><line x1="96" y1="126" x2="190" y2="158" stroke="var(--glass)" stroke-width="1" opacity=".5"/></g>
+              <g><rect x="8" y="150" width="88" height="28" rx="3" fill="#0f1420" stroke="var(--smoke)" stroke-width="1"/><text x="52" y="168" text-anchor="middle" font-size="9" fill="var(--smoke)" font-family="Barlow Condensed" font-weight="700">SMOKE / CO</text><line x1="96" y1="164" x2="190" y2="164" stroke="var(--smoke)" stroke-width="1" opacity=".5"/></g>
+              <g><rect x="8" y="188" width="88" height="28" rx="3" fill="#0f1420" stroke="var(--water)" stroke-width="1"/><text x="52" y="206" text-anchor="middle" font-size="9" fill="var(--water)" font-family="Barlow Condensed" font-weight="700">WATER SENSOR</text><line x1="96" y1="202" x2="190" y2="170" stroke="var(--water)" stroke-width="1" opacity=".5"/></g>
+              <g><rect x="8" y="226" width="88" height="28" rx="3" fill="#0f1420" stroke="var(--panic)" stroke-width="1"/><text x="52" y="244" text-anchor="middle" font-size="9" fill="var(--panic)" font-family="Barlow Condensed" font-weight="700">PANIC BUTTON</text><line x1="96" y1="240" x2="190" y2="176" stroke="var(--panic)" stroke-width="1" opacity=".5"/></g>
+              <g><rect x="356" y="222" width="116" height="28" rx="3" fill="#0f1420" stroke="var(--camera)" stroke-width="1"/><text x="414" y="240" text-anchor="middle" font-size="9" fill="var(--camera)" font-family="Barlow Condensed" font-weight="700">CAMERAS</text><line x1="356" y1="236" x2="290" y2="186" stroke="var(--camera)" stroke-width="1" opacity=".5"/></g>
+              <g><rect x="160" y="264" width="160" height="28" rx="3" fill="#0f1420" stroke="#f5a623" stroke-width="1"/><text x="240" y="282" text-anchor="middle" font-size="9" fill="#f5a623" font-family="Barlow Condensed" font-weight="700">SMART HOME: Locks · Lights · Thermostat</text><line x1="240" y1="264" x2="240" y2="192" stroke="#f5a623" stroke-width="1" opacity=".5"/></g>
+            </svg>
+          </div>
+        </div>
+        <div class="archcard">
+          <div class="archhdr"><span>Layer Defense Model</span><span style="font-size:10px;color:var(--muted)">3 ZONES + LIFE SAFETY</span></div>
+          <div class="archbody">
+            <svg viewBox="0 0 460 330" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <rect width="460" height="330" fill="#070a10"/>
+              <circle cx="230" cy="170" r="148" fill="none" stroke="rgba(249,115,22,.15)" stroke-width="28"/>
+              <circle cx="230" cy="170" r="104" fill="none" stroke="rgba(58,141,222,.15)" stroke-width="28"/>
+              <circle cx="230" cy="170" r="60" fill="none" stroke="rgba(192,132,252,.15)" stroke-width="28"/>
+              <circle cx="230" cy="170" r="22" fill="rgba(245,166,35,.15)" stroke="var(--gold)" stroke-width="1.5"/>
+              <text x="230" y="16" text-anchor="middle" font-family="Barlow Condensed" font-size="11" fill="var(--motion)" font-weight="700">ZONE 1: PERIMETER</text>
+              <text x="230" y="28" text-anchor="middle" font-size="8" fill="#6b7a99">Outdoor Cameras · Doorbell · Motion Floodlights</text>
+              <text x="230" y="68" text-anchor="middle" font-family="Barlow Condensed" font-size="11" fill="var(--blue)" font-weight="700">ZONE 2: ENTRY</text>
+              <text x="230" y="80" text-anchor="middle" font-size="8" fill="#6b7a99">Door/Window Contacts · Glass Break · Smart Lock</text>
+              <text x="230" y="120" text-anchor="middle" font-family="Barlow Condensed" font-size="11" fill="var(--glass)" font-weight="700">ZONE 3: INTERIOR</text>
+              <text x="230" y="132" text-anchor="middle" font-size="8" fill="#6b7a99">Motion Detectors · Indoor Cameras</text>
+              <text x="230" y="166" text-anchor="middle" font-family="Barlow Condensed" font-size="10" fill="var(--gold)" font-weight="800">CORE</text>
+              <text x="230" y="178" text-anchor="middle" font-size="7" fill="#8899aa">Panel + App</text>
+              <rect x="10" y="258" width="440" height="60" rx="5" fill="#0d1520" stroke="rgba(251,146,60,.28)" stroke-width="1"/>
+              <text x="230" y="278" text-anchor="middle" font-family="Barlow Condensed" font-size="12" fill="var(--smoke)" font-weight="800">LIFE SAFETY LAYER — ALL ZONES</text>
+              <text x="230" y="294" text-anchor="middle" font-size="9" fill="#6b7a99">Smoke · CO · Water · Panic — overlays every zone. Not a layer. A parallel system.</text>
+              <text x="230" y="308" text-anchor="middle" font-size="9" fill="var(--amber)" font-style="italic">"Security is what we do. Life Safety is why we exist."</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dmain -->
+</div><!-- /panel-demo -->
+
+<script>
+/* ── LOGIN ── */
+var _K='aaassu_v5',_P='ssu2026';
+if(localStorage.getItem(_K)===_P) document.getElementById('login').classList.add('off');
+function login(){
+  var v=document.getElementById('pw').value.trim();
+  if(v===_P){localStorage.setItem(_K,_P);document.getElementById('login').classList.add('off');}
+  else{var e=document.getElementById('lb-err');e.classList.add('on');document.getElementById('pw').value='';setTimeout(function(){e.classList.remove('on');},3000);}
+}
+function logout(){localStorage.removeItem(_K);location.reload();}
+
+/* ── MASTER NAV ── */
+function go(id,btn){
+  document.querySelectorAll('.nv-tab').forEach(function(t){t.classList.remove('on');});
+  btn.classList.add('on');
+  document.getElementById('panel-guide').classList.remove('on');
+  document.getElementById('panel-demo').classList.remove('on');
+  var DEMO_MAP={fp:'fp',sc:'sc',dv:'dv',em:'em',sb:'sb',ar:'ar'};
+  if(id==='guide'){
+    document.getElementById('panel-guide').classList.add('on');
+    updateGuideNav();
+  } else {
+    document.getElementById('panel-demo').classList.add('on');
+    if(DEMO_MAP[id]) dTab(DEMO_MAP[id], document.querySelector('.dtab[onclick*="\''+DEMO_MAP[id]+'\'"]'));
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── DEMO TABS ── */
+function dTab(id,btn){
+  document.querySelectorAll('.dpage').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.dtab').forEach(function(t){t.classList.remove('on');});
+  var pg=document.getElementById('dp-'+id);
+  if(pg) pg.classList.add('on');
+  if(btn) btn.classList.add('on');
+}
+
+/* ── FLOOR PLAN LAYER FILTER ── */
+function fLayer(type,btn){
+  document.querySelectorAll('.leg').forEach(function(l){l.classList.remove('on');});
+  if(btn) btn.classList.add('on');
+  document.querySelectorAll('[class*="layer-"]').forEach(function(g){
+    g.style.opacity=(type==='all'||g.classList.contains('layer-'+type))?'1':'0.05';
+  });
+}
+
+/* ── GUIDE TAB SYSTEM ── */
+document.querySelectorAll('.tnav .tbtn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var tp=this.dataset.tp;
+    this.closest('.tnav').querySelectorAll('.tbtn').forEach(function(b){b.classList.remove('on');});
+    this.classList.add('on');
+    var stop=this.closest('.stop');
+    stop.querySelectorAll('.tpane').forEach(function(p){p.classList.remove('on');});
+    var pane=stop.querySelector('#'+tp);
+    if(pane) pane.classList.add('on');
+  });
+});
+
+/* ── GUIDE SIDEBAR NAV + PROGRESS ── */
+function updateGuideNav(){
+  var stops=document.querySelectorAll('.stop');
+  var navItems=document.querySelectorAll('.gs-item[data-s]');
+  if(!stops.length) return;
+  var sy=window.scrollY+window.innerHeight*0.4,active=0;
+  stops.forEach(function(s,i){if(sy>=s.getBoundingClientRect().top+window.scrollY) active=i;});
+  navItems.forEach(function(n){n.classList.remove('on');});
+  var a=document.querySelector('.gs-item[data-s="'+active+'"]');
+  if(a) a.classList.add('on');
+  var pct=Math.round(((active+1)/stops.length)*100);
+  var pf=document.getElementById('gp-fill'),pp=document.getElementById('gp-pct');
+  if(pf) pf.style.width=pct+'%';
+  if(pp) pp.textContent=pct+'%';
+}
+
+/* ── MOBILE SIDEBAR ── */
+var mobTog=document.querySelector('.mob-tog');
+if(mobTog) mobTog.onclick=function(){document.getElementById('guide-side').classList.toggle('open');};
+document.querySelectorAll('.gs-item').forEach(function(item){
+  item.addEventListener('click',function(){
+    var sb=document.getElementById('guide-side');
+    if(sb && window.innerWidth<900) sb.classList.remove('open');
+  });
+});
+
+/* ── SCROLL PROGRESS ── */
+window.addEventListener('scroll',function(){
+  var dh=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('gsp').style.width=(dh>0?(window.scrollY/dh)*100:0)+'%';
+  if(document.getElementById('panel-guide').classList.contains('on')) updateGuideNav();
+},{passive:true});
+
+updateGuideNav();
+</script>
+</body>
+</html>
